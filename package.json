@@ -1,0 +1,27 @@
+{
+  "name": "yt-dlp-ffmpeg-combined-wrapper",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint .",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "tui:test": "vitest run tests/tui",
+    "ci": "bun run lint && bun run format && bun run format:check && bun run typecheck && bun run test && bun run tui:test"
+  },
+  "dependencies": {
+    "ink": "^8.0.0",
+    "react": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "oxfmt": "0.80.0",
+    "oxlint": "1.95.0",
+    "typescript": "~7.0.2",
+    "vitest": "^5.1.1"
+  }
+}
