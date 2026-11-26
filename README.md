@@ -104,14 +104,14 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 
 ## Flags
 
-| Flag            | Effect                                      |
-| --------------- | ------------------------------------------- |
-| `--plan <path>` | Read a plan JSON file.                      |
-| `--print`       | Print rendered commands and exit.           |
-| `--run`         | Allow step execution. Off by default.       |
-| `--yes`         | Skip the confirmation prompt.               |
-| `--force`       | Allow output overwrite.                     |
-| `--unsafe`      | Allow steps that need unsafe mode.          |
+| Flag            | Effect                                |
+| --------------- | ------------------------------------- |
+| `--plan <path>` | Read a plan JSON file.                |
+| `--print`       | Print rendered commands and exit.     |
+| `--run`         | Allow step execution. Off by default. |
+| `--yes`         | Skip the confirmation prompt.         |
+| `--force`       | Allow output overwrite.               |
+| `--unsafe`      | Allow steps that need unsafe mode.    |
 
 `--plan` reads a plan file.
 `--print` needs `--plan`.

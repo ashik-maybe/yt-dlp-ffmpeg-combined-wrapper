@@ -243,11 +243,9 @@ describe("verifyStep combined spec", () => {
       command: `ffprobe ${missing}`,
     };
 
-    const result = await verifyStep(
-      { ...okResult(), ok: false, exitCode: 3 },
-      spec,
-      { run: command.run },
-    );
+    const result = await verifyStep({ ...okResult(), ok: false, exitCode: 3 }, spec, {
+      run: command.run,
+    });
 
     expect(result.ok).toBe(false);
     expect(result.findings.map((entry) => entry.code)).toEqual([
