@@ -1,0 +1,141 @@
+name: Drift
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check yt-dlp upstream
+        run: |
+          set -euo pipefail
+          mkdir -p .cache
+          curl -fsSL https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /tmp/yt-dlp
+          chmod +x /tmp/yt-dlp
+          python3 /tmp/yt-dlp --version > .cache/yt-dlp-version.txt
+          python3 /tmp/yt-dlp --help > .cache/yt-dlp-help.txt
+          echo "yt-dlp $(cat .cache/yt-dlp-version.txt)"
+
+      - name: Check FFmpeg upstream
+        run: |
+          set -euo pipefail
+          base="https://ffmpeg.martin-riedl.de/redirect/latest/linux/amd64/release"
+          mkdir -p .cache /tmp/ffmpeg-bin
+          for name in ffmpeg ffprobe; do
+            curl -fsSL "$base/$name.zip" -o "/tmp/ffmpeg-bin/$name.zip"
+            unzip -oq "/tmp/ffmpeg-bin/$name.zip" -d /tmp/ffmpeg-bin
+            chmod +x "/tmp/ffmpeg-bin/$name"
+            rm -f "/tmp/ffmpeg-bin/$name.zip"
+          done
+          /tmp/ffmpeg-bin/ffmpeg -version > .cache/ffmpeg-version.txt
+          /tmp/ffmpeg-bin/ffmpeg -h long > .cache/ffmpeg-help.txt
+          /tmp/ffmpeg-bin/ffmpeg -filters > .cache/ffmpeg-filters.txt
+          /tmp/ffmpeg-bin/ffmpeg -encoders > .cache/ffmpeg-encoders.txt
+          curl -fsSL https://ffmpeg.org/download.html -o .cache/ffmpeg-download.html
+          head -n 1 .cache/ffmpeg-version.txt
+
+      - name: Regenerate spec data
+        run: |
+          set -euo pipefail
+          node --input-type=module - <<'NODE'
+          import { existsSync, readFileSync, writeFileSync } from "node:fs";
+
+          const today = new Date().toISOString().slice(0, 10);
+          const ytDlpVersion = readFileSync(".cache/yt-dlp-version.txt", "utf8").trim();
+          const ffmpegHtml = readFileSync(".cache/ffmpeg-download.html", "utf8");
+          const release = ffmpegHtml.match(
+            /<h3 id="release_[^"]+">FFmpeg\s+([0-9.]+)\s+"([^"]+)"<\/h3>\s*<p>\s*([0-9.]+) was released on (\d{4}-\d{2}-\d{2})\./,
+          );
+          if (!release) {
+            throw new Error("cannot parse FFmpeg release data");
+          }
+          const [, ffmpegVersion, codename, releaseVersion, released] = release;
+          if (releaseVersion !== ffmpegVersion) {
+            throw new Error("FFmpeg release version mismatch");
+          }
+
+          function readJson(path) {
+            return JSON.parse(readFileSync(path, "utf8"));
+          }
+
+          function writeJson(path, value) {
+            writeFileSync(path, JSON.stringify(value, null, 2) + "\n");
+          }
+
+          const ytDlpVersionPath = "src/spec/yt-dlp/version.json";
+          if (existsSync(ytDlpVersionPath)) {
+            const value = readJson(ytDlpVersionPath);
+            value.version = ytDlpVersion;
+            value.channel = "stable";
+            value.source = `https://github.com/yt-dlp/yt-dlp/releases/tag/${ytDlpVersion}`;
+            value.checkedAt = today;
+            value.confidence = "verified";
+            writeJson(ytDlpVersionPath, value);
+          }
+
+          const ytDlpOptionsPath = "src/spec/yt-dlp/options.json";
+          if (existsSync(ytDlpOptionsPath)) {
+            const value = readJson(ytDlpOptionsPath);
+            value.version = ytDlpVersion;
+            value.docs = `https://github.com/yt-dlp/yt-dlp/blob/${ytDlpVersion}/README.md`;
+            writeJson(ytDlpOptionsPath, value);
+          }
+
+          const ffmpegVersionPath = "src/spec/ffmpeg/version.json";
+          if (existsSync(ffmpegVersionPath)) {
+            const value = readJson(ffmpegVersionPath);
+            value.version = ffmpegVersion;
+            value.codename = codename;
+            value.released = released;
+            value.source = `https://ffmpeg.org/download.html#release_${ffmpegVersion}`;
+            writeJson(ffmpegVersionPath, value);
+          }
+
+          const ffmpegManifestPath = "src/spec/ffmpeg/manifest.json";
+          if (existsSync(ffmpegManifestPath)) {
+            const value = readJson(ffmpegManifestPath);
+            value.version = ffmpegVersion;
+            writeJson(ffmpegManifestPath, value);
+          }
+
+          console.log(`yt-dlp ${ytDlpVersion}`);
+          console.log(`FFmpeg ${ffmpegVersion} "${codename}" (${released})`);
+          NODE
+
+      - name: Run CI for pull request
+        run: bun run ci
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/drift-spec
+          delete-branch: true
+          add-paths: |
+            src/spec
+          title: 'chore(spec): refresh upstream spec data'
+          commit-message: 'chore(spec): refresh upstream spec data'
+          body: |
+            Automated weekly drift check.
+
+            This pull request refreshes pinned yt-dlp and FFmpeg spec versions.
+            The gate `bun run ci` passed before this pull request opened.
+
+            Review the spec data changes before merging.
