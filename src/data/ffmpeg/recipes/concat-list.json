@@ -1,0 +1,14 @@
+{
+  "id": "concat-list",
+  "name": "Concat from a list",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-f", "value": "concat" },
+    { "kind": "option", "name": "-safe", "value": "0" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-c", "value": "copy" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

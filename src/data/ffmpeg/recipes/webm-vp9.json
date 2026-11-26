@@ -1,0 +1,17 @@
+{
+  "id": "webm-vp9",
+  "name": "WebM VP9",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-c:v", "value": "libvpx-vp9" },
+    { "kind": "option", "name": "-crf", "value": "32" },
+    { "kind": "option", "name": "-b:v", "value": "0" },
+    { "kind": "option", "name": "-row-mt", "value": "1" },
+    { "kind": "option", "name": "-c:a", "value": "libopus" },
+    { "kind": "option", "name": "-b:a", "value": "96k" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

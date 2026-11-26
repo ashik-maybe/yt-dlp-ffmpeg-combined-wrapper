@@ -1,0 +1,239 @@
+{
+  "schema": 1,
+  "tool": "ffmpeg",
+  "kind": "options",
+  "items": [
+    {
+      "kind": "flag",
+      "name": "-hide_banner",
+      "summary": "Hide the build and library banner."
+    },
+    {
+      "kind": "flag",
+      "name": "-y",
+      "summary": "Overwrite output files without a prompt."
+    },
+    {
+      "kind": "flag",
+      "name": "-n",
+      "summary": "Never overwrite output files."
+    },
+    {
+      "kind": "flag",
+      "name": "-nostdin",
+      "summary": "Disable console input. Use this flag in scripts."
+    },
+    {
+      "kind": "flag",
+      "name": "-vn",
+      "summary": "Disable video output."
+    },
+    {
+      "kind": "flag",
+      "name": "-an",
+      "summary": "Disable audio output."
+    },
+    {
+      "kind": "flag",
+      "name": "-sn",
+      "summary": "Disable subtitle output."
+    },
+    {
+      "kind": "flag",
+      "name": "-shortest",
+      "summary": "Stop when the shortest input stream ends."
+    },
+    {
+      "kind": "option",
+      "name": "-i",
+      "value": "input.mp4",
+      "summary": "Read this input file or stream. You can repeat this option."
+    },
+    {
+      "kind": "option",
+      "name": "-ss",
+      "value": "00:00:10",
+      "summary": "Seek to this time before processing."
+    },
+    {
+      "kind": "option",
+      "name": "-to",
+      "value": "00:01:10",
+      "summary": "Stop at this time."
+    },
+    {
+      "kind": "option",
+      "name": "-t",
+      "value": "60",
+      "summary": "Limit the output duration in seconds."
+    },
+    {
+      "kind": "option",
+      "name": "-c",
+      "value": "copy",
+      "summary": "Select one encoder for all streams. The value copy does not re-encode."
+    },
+    {
+      "kind": "option",
+      "name": "-c:v",
+      "value": "libx264",
+      "summary": "Select the video encoder."
+    },
+    {
+      "kind": "option",
+      "name": "-c:a",
+      "value": "aac",
+      "summary": "Select the audio encoder."
+    },
+    {
+      "kind": "option",
+      "name": "-preset",
+      "value": "medium",
+      "summary": "Set the encoder speed and compression trade-off. The libx264 presets are ultrafast to placebo."
+    },
+    {
+      "kind": "option",
+      "name": "-crf",
+      "value": "23",
+      "summary": "Set constant rate factor. Lower values keep more quality. The range is 0 to 51."
+    },
+    {
+      "kind": "option",
+      "name": "-b:v",
+      "value": "2M",
+      "summary": "Set the video bitrate."
+    },
+    {
+      "kind": "option",
+      "name": "-b:a",
+      "value": "128k",
+      "summary": "Set the audio bitrate."
+    },
+    {
+      "kind": "option",
+      "name": "-q:a",
+      "value": "2",
+      "summary": "Set the audio quality for a VBR encoder. Lower values give better quality."
+    },
+    {
+      "kind": "option",
+      "name": "-q:v",
+      "value": "2",
+      "summary": "Set the video quality for a codec with a quality scale. Lower values give better quality."
+    },
+    {
+      "kind": "option",
+      "name": "-pix_fmt",
+      "value": "yuv420p",
+      "summary": "Set the pixel format. The yuv420p format plays in most browsers."
+    },
+    {
+      "kind": "option",
+      "name": "-vf",
+      "value": "scale=-2:1080",
+      "summary": "Apply a video filter graph."
+    },
+    {
+      "kind": "option",
+      "name": "-af",
+      "value": "loudnorm=I=-16:TP=-1.5:LRA=11",
+      "summary": "Apply an audio filter graph."
+    },
+    {
+      "kind": "option",
+      "name": "-filter_complex",
+      "value": "split[a][b];[a]palettegen[p];[b][p]paletteuse",
+      "summary": "Apply a filter graph with multiple inputs or outputs."
+    },
+    {
+      "kind": "option",
+      "name": "-map",
+      "value": "0:v:0",
+      "summary": "Select an input stream for the output. You can repeat this option."
+    },
+    {
+      "kind": "option",
+      "name": "-map_metadata",
+      "value": "-1",
+      "summary": "Copy metadata from an input. The value -1 removes all metadata."
+    },
+    {
+      "kind": "option",
+      "name": "-movflags",
+      "value": "+faststart",
+      "summary": "Set MP4 muxer flags. The faststart flag moves the index to the file start."
+    },
+    {
+      "kind": "option",
+      "name": "-frames:v",
+      "value": "1",
+      "summary": "Stop after this number of video frames."
+    },
+    {
+      "kind": "option",
+      "name": "-loop",
+      "value": "0",
+      "summary": "Set the loop count for the GIF muxer. The value 0 repeats forever."
+    },
+    {
+      "kind": "option",
+      "name": "-f",
+      "value": "mp4",
+      "summary": "Force the input or output format."
+    },
+    {
+      "kind": "option",
+      "name": "-safe",
+      "value": "0",
+      "summary": "Allow unsafe paths in a concat list. The concat demuxer reads this option."
+    },
+    {
+      "kind": "option",
+      "name": "-avoid_negative_ts",
+      "value": "make_zero",
+      "summary": "Shift timestamps to prevent negative values. Use make_zero with stream copy."
+    },
+    {
+      "kind": "option",
+      "name": "-ar",
+      "value": "48000",
+      "summary": "Set the audio sample rate in hertz."
+    },
+    {
+      "kind": "option",
+      "name": "-ac",
+      "value": "2",
+      "summary": "Set the number of audio channels."
+    },
+    {
+      "kind": "option",
+      "name": "-r",
+      "value": "30",
+      "summary": "Set the frame rate."
+    },
+    {
+      "kind": "option",
+      "name": "-metadata",
+      "value": "title=Example",
+      "summary": "Set one metadata field. You can repeat this option."
+    },
+    {
+      "kind": "option",
+      "name": "-loglevel",
+      "value": "error",
+      "summary": "Set the log level."
+    },
+    {
+      "kind": "option",
+      "name": "-threads",
+      "value": "0",
+      "summary": "Set the thread count. The value 0 selects an automatic count."
+    },
+    {
+      "kind": "option",
+      "name": "-row-mt",
+      "value": "1",
+      "summary": "Enable row-based multithreading in libvpx encoders. The value 1 enables it."
+    }
+  ]
+}

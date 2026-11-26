@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "tool": "ffmpeg",
+  "version": "8.1",
+  "files": {
+    "version": "version.json",
+    "options": "options.json",
+    "filters": "filters.json",
+    "encoders": "encoders.json"
+  }
+}

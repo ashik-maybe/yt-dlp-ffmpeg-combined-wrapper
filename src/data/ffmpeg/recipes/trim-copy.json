@@ -1,0 +1,15 @@
+{
+  "id": "trim-copy",
+  "name": "Trim with stream copy",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-ss", "value": "00:00:10" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-t", "value": "60" },
+    { "kind": "option", "name": "-c", "value": "copy" },
+    { "kind": "option", "name": "-avoid_negative_ts", "value": "make_zero" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "strip-metadata",
+  "name": "Strip metadata",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-map_metadata", "value": "-1" },
+    { "kind": "option", "name": "-c", "value": "copy" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "palette-gif",
+  "name": "Palette GIF",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    {
+      "kind": "option",
+      "name": "-filter_complex",
+      "value": "fps=12,scale=480:-2:flags=lanczos,split[a][b];[a]palettegen[p];[b][p]paletteuse"
+    },
+    { "kind": "option", "name": "-loop", "value": "0" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "scale-1080p",
+  "name": "Scale to 1080p",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-vf", "value": "scale=-2:1080" },
+    { "kind": "option", "name": "-c:v", "value": "libx264" },
+    { "kind": "option", "name": "-preset", "value": "medium" },
+    { "kind": "option", "name": "-crf", "value": "21" },
+    { "kind": "option", "name": "-c:a", "value": "copy" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

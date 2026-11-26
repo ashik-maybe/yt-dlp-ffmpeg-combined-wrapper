@@ -1,0 +1,14 @@
+{
+  "id": "remux-mkv",
+  "name": "Remux to Matroska",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-map", "value": "0" },
+    { "kind": "option", "name": "-c", "value": "copy" },
+    { "kind": "option", "name": "-map_metadata", "value": "0" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

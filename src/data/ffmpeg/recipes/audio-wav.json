@@ -1,0 +1,15 @@
+{
+  "id": "audio-wav",
+  "name": "Audio to WAV",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "flag", "name": "-vn" },
+    { "kind": "option", "name": "-c:a", "value": "pcm_s16le" },
+    { "kind": "option", "name": "-ar", "value": "48000" },
+    { "kind": "option", "name": "-ac", "value": "2" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

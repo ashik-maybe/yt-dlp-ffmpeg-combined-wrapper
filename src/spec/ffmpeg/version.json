@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "tool": "ffmpeg",
+  "version": "8.1",
+  "codename": "Hoare",
+  "released": "2026-03-16",
+  "source": "https://ffmpeg.org/download.html#release_8.1",
+  "pinned": true
+}

@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "tool": "ffmpeg",
+  "kind": "encoders",
+  "items": [
+    {
+      "kind": "value",
+      "name": "libx264",
+      "value": "h264",
+      "media": "video",
+      "lossy": true,
+      "summary": "Software H.264 encoder. It gives small files and wide player support."
+    },
+    {
+      "kind": "value",
+      "name": "libx265",
+      "value": "hevc",
+      "media": "video",
+      "lossy": true,
+      "summary": "Software HEVC encoder. It gives smaller files than H.264 at the same quality."
+    },
+    {
+      "kind": "value",
+      "name": "libvpx-vp9",
+      "value": "vp9",
+      "media": "video",
+      "lossy": true,
+      "summary": "Software VP9 encoder for WebM files."
+    },
+    {
+      "kind": "value",
+      "name": "libsvtav1",
+      "value": "av1",
+      "media": "video",
+      "lossy": true,
+      "summary": "Scalable AV1 encoder with good speed."
+    },
+    {
+      "kind": "value",
+      "name": "gif",
+      "value": "gif",
+      "media": "video",
+      "lossy": true,
+      "summary": "GIF encoder with a limited 256-color palette."
+    },
+    {
+      "kind": "value",
+      "name": "aac",
+      "value": "aac",
+      "media": "audio",
+      "lossy": true,
+      "summary": "Native AAC encoder. It is stable and widely supported."
+    },
+    {
+      "kind": "value",
+      "name": "libmp3lame",
+      "value": "mp3",
+      "media": "audio",
+      "lossy": true,
+      "summary": "LAME MP3 encoder."
+    },
+    {
+      "kind": "value",
+      "name": "libopus",
+      "value": "opus",
+      "media": "audio",
+      "lossy": true,
+      "summary": "Opus encoder for WebM and Ogg files."
+    },
+    {
+      "kind": "value",
+      "name": "pcm_s16le",
+      "value": "pcm_s16le",
+      "media": "audio",
+      "lossy": false,
+      "summary": "Uncompressed 16-bit PCM audio. It is lossless and large."
+    }
+  ]
+}

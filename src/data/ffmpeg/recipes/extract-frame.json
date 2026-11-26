@@ -1,0 +1,14 @@
+{
+  "id": "extract-frame",
+  "name": "Extract a frame",
+  "tool": "ffmpeg",
+  "confidence": "validated",
+  "args": [
+    { "kind": "flag", "name": "-hide_banner" },
+    { "kind": "option", "name": "-ss", "value": "00:00:05" },
+    { "kind": "option", "name": "-i", "value": "{{input}}" },
+    { "kind": "option", "name": "-frames:v", "value": "1" },
+    { "kind": "option", "name": "-q:v", "value": "2" },
+    { "kind": "value", "name": "output", "value": "{{output}}" }
+  ]
+}

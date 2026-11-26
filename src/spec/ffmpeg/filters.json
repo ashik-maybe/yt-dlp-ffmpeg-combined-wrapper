@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "tool": "ffmpeg",
+  "kind": "filters",
+  "items": [
+    {
+      "kind": "value",
+      "name": "scale",
+      "value": "scale=-2:1080",
+      "media": "video",
+      "summary": "Resize video frames. A size value of -2 keeps the aspect ratio."
+    },
+    {
+      "kind": "value",
+      "name": "fps",
+      "value": "fps=12",
+      "media": "video",
+      "summary": "Drop or duplicate frames to reach a constant frame rate."
+    },
+    {
+      "kind": "value",
+      "name": "split",
+      "value": "split[a][b]",
+      "media": "video",
+      "summary": "Send one video stream to two filter chains."
+    },
+    {
+      "kind": "value",
+      "name": "palettegen",
+      "value": "palettegen=max_colors=256",
+      "media": "video",
+      "summary": "Build an optimal color palette for a GIF."
+    },
+    {
+      "kind": "value",
+      "name": "paletteuse",
+      "value": "paletteuse=dither=sierra2_4a",
+      "media": "video",
+      "summary": "Map video frames to a palette. Use it after palettegen."
+    },
+    {
+      "kind": "value",
+      "name": "trim",
+      "value": "trim=start=10:end=70",
+      "media": "video",
+      "summary": "Keep only the frames between two timestamps."
+    },
+    {
+      "kind": "value",
+      "name": "setpts",
+      "value": "setpts=PTS-STARTPTS",
+      "media": "video",
+      "summary": "Reset frame timestamps to start at zero."
+    },
+    {
+      "kind": "value",
+      "name": "crop",
+      "value": "crop=1280:720",
+      "media": "video",
+      "summary": "Cut a rectangle from each video frame."
+    },
+    {
+      "kind": "value",
+      "name": "transpose",
+      "value": "transpose=1",
+      "media": "video",
+      "summary": "Rotate video frames. The value 1 rotates 90 degrees clockwise."
+    },
+    {
+      "kind": "value",
+      "name": "format",
+      "value": "format=yuv420p",
+      "media": "video",
+      "summary": "Convert frames to a pixel format."
+    },
+    {
+      "kind": "value",
+      "name": "thumbnail",
+      "value": "thumbnail=100",
+      "media": "video",
+      "summary": "Select the most representative frame from each batch."
+    },
+    {
+      "kind": "value",
+      "name": "subtitles",
+      "value": "subtitles=subs.srt",
+      "media": "video",
+      "summary": "Burn a subtitle file into the video frames."
+    },
+    {
+      "kind": "value",
+      "name": "loudnorm",
+      "value": "loudnorm=I=-16:TP=-1.5:LRA=11",
+      "media": "audio",
+      "summary": "Normalize loudness to a target level. The EBU R128 target is -16 LUFS."
+    },
+    {
+      "kind": "value",
+      "name": "dynaudnorm",
+      "value": "dynaudnorm=f=150:g=15",
+      "media": "audio",
+      "summary": "Normalize audio volume in sliding windows."
+    },
+    {
+      "kind": "value",
+      "name": "volume",
+      "value": "volume=0.5",
+      "media": "audio",
+      "summary": "Change the audio volume by a factor."
+    },
+    {
+      "kind": "value",
+      "name": "atempo",
+      "value": "atempo=1.25",
+      "media": "audio",
+      "summary": "Change audio speed without a pitch change."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "tool": "ffmpeg",
+  "lists": [
+    {
+      "id": "picker",
+      "title": "FFmpeg tasks",
+      "items": [
+        { "id": "web-h264", "hint": "H.264 MP4 with AAC audio for the web" },
+        { "id": "trim-copy", "hint": "Cut a clip without re-encoding" },
+        { "id": "extract-audio", "hint": "Extract audio as MP3" },
+        { "id": "palette-gif", "hint": "Make a GIF with a generated palette" },
+        { "id": "crf-tuning", "hint": "Re-encode at a fixed CRF value" },
+        { "id": "loudnorm", "hint": "Normalize loudness to -16 LUFS" }
+      ]
+    },
+    {
+      "id": "more",
+      "title": "More FFmpeg tasks",
+      "items": [
+        { "id": "web-h265", "hint": "Smaller HEVC MP4 with AAC audio" },
+        { "id": "webm-vp9", "hint": "VP9 WebM with Opus audio" },
+        { "id": "remux-mkv", "hint": "Move streams into Matroska without re-encoding" },
+        { "id": "extract-frame", "hint": "Save one frame as a JPEG image" },
+        { "id": "scale-1080p", "hint": "Scale to 1080p height and encode H.264" },
+        { "id": "concat-list", "hint": "Join clips from a concat list without re-encoding" },
+        { "id": "strip-metadata", "hint": "Remove all metadata without re-encoding" },
+        { "id": "audio-wav", "hint": "Convert audio to 48 kHz stereo WAV" }
+      ]
+    }
+  ]
+}
