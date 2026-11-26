@@ -2,7 +2,9 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const AGENTS_URL = new URL("../AGENTS.md", import.meta.url);
+const AGENTS_URL = process.env.AGENTS_FILE
+  ? pathToFileURL(path.resolve(process.env.AGENTS_FILE))
+  : new URL("../AGENTS.md", import.meta.url);
 
 export const REQUIRED_HEADINGS = [
   "Purpose",
@@ -32,11 +34,25 @@ export const REQUIRED_PATHS = ["src/core", "src/planners", "src/runner", "src/tu
 
 export const REQUIRED_WORDS = ["dry-run", "--run", "--force", "--unsafe"];
 
-export const STALE_TERMS = ["webapp", "playwright"];
+export const STALE_TERMS = [/web\s*app/i, /playwright/i];
+
+function stripFences(text) {
+  const lines = text.split(/\r?\n/);
+  const kept = [];
+  let fenced = false;
+  for (const line of lines) {
+    if (/^\s*```/.test(line)) {
+      fenced = !fenced;
+      continue;
+    }
+    if (!fenced) kept.push(line);
+  }
+  return kept.join("\n");
+}
 
 function headingTitles(text) {
   const titles = new Set();
-  for (const line of text.split(/\r?\n/)) {
+  for (const line of stripFences(text).split(/\r?\n/)) {
     const match = /^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$/.exec(line);
     if (match === null) continue;
     titles.add(match[1].replace(/\s+/g, " ").trim().toLowerCase());
@@ -44,9 +60,17 @@ function headingTitles(text) {
   return titles;
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function hasTerm(text, term) {
+  const pattern = new RegExp(`(?:^|[^A-Za-z0-9_-])${escapeRegExp(term)}(?![A-Za-z0-9_-])`, "m");
+  return pattern.test(text);
+}
+
 export function checkAgents(text) {
   const source = typeof text === "string" ? text : "";
-  const lower = source.toLowerCase();
   const headings = headingTitles(source);
   const missing = [];
 
@@ -54,16 +78,16 @@ export function checkAgents(text) {
     if (!headings.has(heading.toLowerCase())) missing.push(`heading: ${heading}`);
   }
   for (const command of REQUIRED_COMMANDS) {
-    if (!source.includes(command)) missing.push(`command: ${command}`);
+    if (!hasTerm(source, command)) missing.push(`command: ${command}`);
   }
   for (const requiredPath of REQUIRED_PATHS) {
-    if (!source.includes(requiredPath)) missing.push(`path: ${requiredPath}`);
+    if (!hasTerm(source, requiredPath)) missing.push(`path: ${requiredPath}`);
   }
   for (const word of REQUIRED_WORDS) {
-    if (!source.includes(word)) missing.push(`word: ${word}`);
+    if (!hasTerm(source, word)) missing.push(`word: ${word}`);
   }
   for (const term of STALE_TERMS) {
-    if (lower.includes(term)) missing.push(`stale: ${term}`);
+    if (term.test(source)) missing.push(`found stale: ${term.source}`);
   }
 
   return { ok: missing.length === 0, missing };
@@ -83,12 +107,15 @@ export function main() {
   console.log(
     `agents-check: ${REQUIRED_HEADINGS.length} headings, ${REQUIRED_COMMANDS.length} commands, ` +
       `${REQUIRED_PATHS.length} paths, ${REQUIRED_WORDS.length} words, ` +
-      `${STALE_TERMS.length} stale terms`,
+      `${STALE_TERMS.length} stale patterns`,
   );
 
   if (!ok) {
-    for (const item of missing) console.error(`  FAIL missing: ${item}`);
-    console.error(`agents-check: failed (${missing.length} missing)`);
+    for (const item of missing) {
+      const label = item.startsWith("found stale:") ? "" : "missing: ";
+      console.error(`  FAIL ${label}${item}`);
+    }
+    console.error(`agents-check: failed (${missing.length} problems)`);
     process.exitCode = 1;
     return 1;
   }
