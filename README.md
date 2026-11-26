@@ -32,16 +32,33 @@ The first pass is a dry-run.
 It validates the plan and shows every command.
 It does not start a process.
 
+Load a plan file directly:
+
+```sh
+bun bin/combined-wrapper.ts --plan examples/plans/download-transcode.json
+```
+
+Print the resolved commands and exit:
+
+```sh
+bun bin/combined-wrapper.ts --plan examples/plans/download-transcode.json --print
+```
+
+`--print` needs `--plan`.
+It starts no process.
+
+Read [docs/EXAMPLES.md](docs/EXAMPLES.md) for every sample plan.
+
 Allow execution with a confirmation prompt:
 
 ```sh
-bun bin/combined-wrapper.ts --run
+bun bin/combined-wrapper.ts --plan examples/plans/download-transcode.json --run
 ```
 
 Run without a prompt:
 
 ```sh
-bun bin/combined-wrapper.ts --run --yes
+bun bin/combined-wrapper.ts --plan examples/plans/download-transcode.json --run --yes
 ```
 
 Read [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) to write a plan.
@@ -61,6 +78,7 @@ The tool checks the plan before it runs:
 - Guard findings.
 
 A dry-run stops after these checks.
+`--print` stops there too and writes each rendered command.
 `--run` executes the steps in dependency order.
 A failed step stops the plan.
 Each step can verify its outputs after it runs.
@@ -86,13 +104,19 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 
 ## Flags
 
-| Flag       | Effect                                |
-| ---------- | ------------------------------------- |
-| `--run`    | Allow step execution. Off by default. |
-| `--yes`    | Skip the confirmation prompt.         |
-| `--force`  | Allow output overwrite.               |
-| `--unsafe` | Allow steps that need unsafe mode.    |
+| Flag            | Effect                                      |
+| --------------- | ------------------------------------------- |
+| `--plan <path>` | Read a plan JSON file.                      |
+| `--print`       | Print rendered commands and exit.           |
+| `--run`         | Allow step execution. Off by default.       |
+| `--yes`         | Skip the confirmation prompt.               |
+| `--force`       | Allow output overwrite.                     |
+| `--unsafe`      | Allow steps that need unsafe mode.          |
 
+`--plan` reads a plan file.
+`--print` needs `--plan`.
+`--print` validates the plan and writes one command per step.
+It starts no process.
 `--run` is the only way to start a process.
 `--yes` skips the prompt but not a guard.
 `--force` and `--unsafe` never turn on by themselves.
@@ -102,6 +126,7 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 The tool does not execute a command by default.
 Every plan starts as a dry-run.
 `--run` enables execution.
+`--print` writes the commands and starts no process.
 `--yes` removes the confirmation prompt.
 The overwrite guard blocks every declared output unless `--force` is set.
 A step marked `unsafe` needs `--unsafe`.
@@ -137,6 +162,9 @@ Repository layout:
 - `tests/`: unit, runner, CLI, and TUI tests.
 - `scripts/`: checks and packaging.
 - `docs/`: reference documentation.
+- `examples/plans/`: sample plans.
+
+Read [docs/EXAMPLES.md](docs/EXAMPLES.md) for sample plans and commands.
 
 Run the full gate:
 
