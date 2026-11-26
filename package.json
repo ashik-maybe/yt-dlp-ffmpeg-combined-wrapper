@@ -12,7 +12,8 @@
     "tui:test": "vitest run tests/tui",
     "spec:check": "node scripts/spec-check.mjs",
     "readme:check": "node scripts/readme-check.mjs",
-    "ci": "bun run lint && bun run format:check && bun run typecheck && bun run spec:check && bun run readme:check && bun run test && bun run tui:test"
+    "agents:check": "node scripts/agents-check.mjs",
+    "ci": "bun run lint && bun run format:check && bun run typecheck && bun run spec:check && bun run readme:check && bun run agents:check && bun run test && bun run tui:test"
   },
   "dependencies": {
     "ink": "^8.0.0",
