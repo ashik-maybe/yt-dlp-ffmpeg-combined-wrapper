@@ -1,0 +1,50 @@
+import type { PipelinePlan } from "../core/index.js";
+
+export function downloadTranscodePlan(): PipelinePlan {
+  return {
+    version: 1,
+    id: "download-transcode",
+    name: "Download and transcode",
+    shell: "posix",
+    vars: {
+      sourceUrl: "https://example.com/video",
+      outputPath: "out",
+    },
+    steps: [
+      {
+        id: "download",
+        tool: "yt-dlp",
+        recipeId: "best-video",
+        args: [
+          { kind: "option", name: "-f", value: "bv*+ba/b" },
+          { kind: "option", name: "--merge-output-format", value: "mkv" },
+          { kind: "option", name: "-o", values: ["{{outputPath}}/source.%(ext)s"] },
+          { kind: "flag", name: "--no-playlist" },
+          { kind: "value", name: "{{sourceUrl}}" },
+        ],
+        outputs: ["{{outputPath}}/source.mkv"],
+        verify: { exists: ["{{outputPath}}/source.mkv"] },
+      },
+      {
+        id: "transcode",
+        tool: "ffmpeg",
+        recipeId: "web-h264",
+        args: [
+          { kind: "flag", name: "-hide_banner" },
+          { kind: "option", name: "-i", value: "{{outputPath}}/source.mkv" },
+          { kind: "option", name: "-c:v", value: "libx264" },
+          { kind: "option", name: "-preset", value: "medium" },
+          { kind: "option", name: "-crf", value: "23" },
+          { kind: "option", name: "-c:a", value: "aac" },
+          { kind: "option", name: "-b:a", value: "128k" },
+          { kind: "option", name: "-movflags", value: "+faststart" },
+          { kind: "value", name: "{{outputPath}}/web.mp4" },
+        ],
+        inputs: ["{{outputPath}}/source.mkv"],
+        outputs: ["{{outputPath}}/web.mp4"],
+        dependsOn: ["download"],
+        verify: { exists: ["{{outputPath}}/web.mp4"] },
+      },
+    ],
+  };
+}
