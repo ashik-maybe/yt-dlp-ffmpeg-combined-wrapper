@@ -80,6 +80,8 @@ describe("renderPlan", () => {
 
     expect(rendered.ok).toBe(false);
     expect(rendered.findings.map((finding) => finding.code)).toEqual([
+      "E_BLOCKED",
+      "E_BLOCKED",
       "E_UNBOUND_VAR",
       "E_UNBOUND_VAR",
       "E_UNBOUND_VAR",
@@ -140,10 +142,14 @@ describe("--print", () => {
     };
     const path = await writePlan("no-spawn.json", plan);
 
-    const run = runCli(["--print", "--run", "--plan", path]);
+    const blocked = runCli(["--print", "--run", "--plan", path]);
+    expect(blocked.status).toBe(2);
+    expect(blocked.stderr).toContain("E_UNSAFE");
+    expect(await fileExists(marker)).toBe(false);
 
-    expect(run.status).toBe(0);
-    expect(run.stdout).toContain("--exec");
+    const allowed = runCli(["--print", "--run", "--unsafe", "--plan", path]);
+    expect(allowed.status).toBe(0);
+    expect(allowed.stdout).toContain("--exec");
     expect(await fileExists(marker)).toBe(false);
   });
 });

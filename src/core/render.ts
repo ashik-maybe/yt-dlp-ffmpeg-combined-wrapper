@@ -18,7 +18,7 @@ export function renderArg(arg: PlanArg): string {
     return quotePosix(arg.value ?? arg.name);
   }
 
-  const token = flagToken(arg.alias ?? arg.name);
+  const token = quotePosix(flagToken(arg.alias ?? arg.name));
   if (arg.kind === "flag") {
     return token;
   }

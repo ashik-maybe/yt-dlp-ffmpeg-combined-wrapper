@@ -184,7 +184,7 @@ describe("executePlan", () => {
 
     expect(results).toHaveLength(1);
     expect(results[0].ok).toBe(false);
-    expect(results[0].findings.some((finding) => finding.code === "E_UNBOUND_VAR")).toBe(true);
+    expect(results[0].findings.some((finding) => finding.code === "E_BLOCKED")).toBe(true);
     expect(calls).toBe(0);
   });
 

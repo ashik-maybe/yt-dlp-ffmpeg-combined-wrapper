@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { Box, Text, useApp, useInput } from "ink";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { bindText, collectGuards, renderCommand } from "../core/index.js";
@@ -17,6 +18,7 @@ export interface RunRequest {
   readonly unsafe: boolean;
   readonly force: boolean;
   readonly dryRun: boolean;
+  readonly signal?: AbortSignal;
 }
 
 /** Runs a plan and returns one result for each executed step. */
@@ -42,6 +44,8 @@ const defaultExecutor: PlanExecutor = (request) =>
   executePlan(request.plan, ADAPTERS, {
     dryRun: false,
     unsafe: request.unsafe,
+    force: request.force,
+    signal: request.signal,
   });
 
 const SCREEN_STEP: Readonly<Record<ScreenName, number>> = {
@@ -101,9 +105,10 @@ export function App(props: AppProps) {
   const [logs, setLogs] = useState<readonly string[]>([]);
   const [notice, setNotice] = useState("");
   const [running, setRunning] = useState(false);
-  const abortRef = useRef(false);
+  const controllerRef = useRef<AbortController | null>(null);
+  const runIdRef = useRef(0);
   const findings = useMemo<readonly Finding[]>(
-    () => collectGuards(plan, { force, unsafe }),
+    () => collectGuards(plan, { force, unsafe, exists: existsSync }),
     [plan, force, unsafe],
   );
 
@@ -132,7 +137,9 @@ export function App(props: AppProps) {
   }
 
   function resetToPicker() {
-    abortRef.current = false;
+    runIdRef.current += 1;
+    controllerRef.current?.abort();
+    controllerRef.current = null;
     setRunning(false);
     setViews(buildViews(plan));
     setLogs([]);
@@ -146,9 +153,16 @@ export function App(props: AppProps) {
       setNotice("Execution is off. Restart with --run.");
       return;
     }
+    const blocking = findings.find((finding) => finding.severity === "error");
+    if (blocking !== undefined) {
+      setNotice(`Blocked by ${blocking.code}: ${blocking.message}`);
+      return;
+    }
     if (running) return;
 
-    abortRef.current = false;
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    const runId = ++runIdRef.current;
     setNotice("");
     setRunning(true);
     setScreen("progress");
@@ -158,8 +172,14 @@ export function App(props: AppProps) {
     setLogs([`Starting ${plan.name}`]);
 
     try {
-      const results = await executor({ plan, unsafe, force, dryRun: false });
-      if (abortRef.current) return;
+      const results = await executor({
+        plan,
+        unsafe,
+        force,
+        dryRun: false,
+        signal: controller.signal,
+      });
+      if (runId !== runIdRef.current) return;
 
       const byId = new Map(results.map((result) => [result.stepId, result]));
       setViews(
@@ -177,7 +197,7 @@ export function App(props: AppProps) {
       setNotice(ok ? "" : "One or more steps failed.");
       setScreen("summary");
     } catch (error) {
-      if (abortRef.current) return;
+      if (runId !== runIdRef.current) return;
       const detail = error instanceof Error ? error.message : String(error);
       setViews((current) =>
         current.map((view) =>
@@ -190,13 +210,18 @@ export function App(props: AppProps) {
       setNotice(`Run failed: ${detail}`);
       setScreen("summary");
     } finally {
-      setRunning(false);
+      if (runId === runIdRef.current) {
+        controllerRef.current = null;
+        setRunning(false);
+      }
     }
   }
 
   function abortRun() {
+    runIdRef.current += 1;
+    controllerRef.current?.abort();
+    controllerRef.current = null;
     if (!running) return;
-    abortRef.current = true;
     setRunning(false);
     setViews((current) =>
       current.map((view) => {

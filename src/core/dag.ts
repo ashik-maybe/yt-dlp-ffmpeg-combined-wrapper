@@ -108,7 +108,9 @@ export function topoOrder(steps: readonly Step[]): TopoResult {
 
   if (order.length !== steps.length) {
     const cycleIds = steps.map((s) => s.id).filter((id) => !order.includes(id));
-    findings.push(err("E_CYCLE", `dependency cycle detected: ${cycleIds.join(", ")}`, "steps"));
+    findings.push(
+      err("E_CYCLE", `dependency cycle blocks these steps: ${cycleIds.join(", ")}`, "steps"),
+    );
   }
 
   return {

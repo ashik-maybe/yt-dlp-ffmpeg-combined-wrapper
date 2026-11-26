@@ -136,6 +136,43 @@ describe("checkBlocked", () => {
   });
 });
 
+describe("collectGuards with vars", () => {
+  it("binds vars before it checks placeholders", () => {
+    const filled: PipelinePlan = {
+      version: 1,
+      id: "filled",
+      name: "filled plan",
+      shell: "posix",
+      vars: { sourceUrl: "https://example.com/video", outputPath: "out" },
+      steps: [
+        {
+          id: "download",
+          tool: "yt-dlp",
+          args: [{ kind: "value", name: "{{sourceUrl}}" }],
+          outputs: ["{{outputPath}}/source.mkv"],
+        },
+      ],
+    };
+
+    expect(collectGuards(filled, { force: true, unsafe: true })).toEqual([]);
+  });
+
+  it("scans inputs and verify fields for placeholders", () => {
+    const step: Step = {
+      id: "verify",
+      tool: "ffmpeg",
+      args: [],
+      inputs: ["{{inputPath}}"],
+      verify: { command: "ffprobe {{probePath}}", exists: ["{{outputPath}}"] },
+    };
+
+    const names = checkBlocked(step)[0]?.message ?? "";
+    expect(names).toContain("{{inputPath}}");
+    expect(names).toContain("{{probePath}}");
+    expect(names).toContain("{{outputPath}}");
+  });
+});
+
 describe("collectGuards blocked", () => {
   it("adds E_BLOCKED for a plan with placeholders", () => {
     const findings = collectGuards(blockedPlan, { force: true, unsafe: true });

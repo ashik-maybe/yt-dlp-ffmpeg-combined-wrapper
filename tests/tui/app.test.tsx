@@ -255,6 +255,7 @@ describe("App", () => {
       unsafe: false,
       force: false,
       dryRun: false,
+      signal: expect.any(AbortSignal),
     });
 
     finish?.(okResults);

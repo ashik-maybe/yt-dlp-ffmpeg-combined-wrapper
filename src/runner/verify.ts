@@ -29,7 +29,8 @@ function defaultRun(command: string): CommandOutcome {
 
 function defaultSizeOf(path: string): number | undefined {
   try {
-    return statSync(path).size;
+    const stat = statSync(path);
+    return stat.isFile() ? stat.size : undefined;
   } catch {
     return undefined;
   }

@@ -1,7 +1,8 @@
-import { spawn } from "node:child_process";
-import { bindText, renderCommand, topoOrder, validateDag } from "../core/index.js";
+import { existsSync } from "node:fs";
+import { bindText, collectGuards, renderCommand, topoOrder, validateDag } from "../core/index.js";
 import type { Finding, PipelinePlan, Step, StepResult, Tool, VerifySpec } from "../core/index.js";
 import type { ToolAdapter } from "../contracts/index.js";
+import { runProcess } from "./process.js";
 import { verifyStep } from "./verify.js";
 
 export interface ProcessOutcome {
@@ -22,32 +23,12 @@ export interface ExecuteDeps {
   readonly verify?: VerifyFn;
   readonly dryRun?: boolean;
   readonly unsafe?: boolean;
+  readonly force?: boolean;
+  readonly signal?: AbortSignal;
 }
 
 function errorFinding(code: string, message: string, location?: string): Finding {
   return { severity: "error", code, message, location };
-}
-
-function runProcess(argv: readonly string[]): Promise<ProcessOutcome> {
-  return new Promise((resolve) => {
-    const child = spawn(argv[0] ?? "", argv.slice(1), {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let stdout = "";
-    let stderr = "";
-    child.stdout.on("data", (chunk: Buffer) => {
-      stdout += chunk.toString();
-    });
-    child.stderr.on("data", (chunk: Buffer) => {
-      stderr += chunk.toString();
-    });
-    child.on("error", (error) => {
-      resolve({ exitCode: 1, stdout, stderr: `${stderr}${error.message}` });
-    });
-    child.on("close", (code) => {
-      resolve({ exitCode: code ?? 1, stdout, stderr });
-    });
-  });
 }
 
 function bindSpec(spec: VerifySpec, vars: Readonly<Record<string, string>>): VerifySpec {
@@ -83,6 +64,11 @@ export async function executePlan(
   const vars = plan.vars ?? {};
   const dryRun = deps.dryRun ?? true;
   const unsafe = deps.unsafe ?? plan.defaults?.unsafe ?? false;
+  const force = deps.force ?? plan.defaults?.force ?? false;
+  const guards = collectGuards(plan, { force, unsafe, exists: existsSync });
+  if (guards.some((finding) => finding.severity === "error")) {
+    return [{ stepId: plan.id, ok: false, findings: guards }];
+  }
   const results: StepResult[] = [];
 
   for (const id of order) {
@@ -107,6 +93,11 @@ export async function executePlan(
       break;
     }
 
+    const boundStep: Step = {
+      ...step,
+      args: resolution.args,
+      outputs: step.outputs?.map((output) => bindText(output, vars)),
+    };
     const argv = renderCommand(step.tool, resolution.args);
     if (dryRun) {
       results.push({
@@ -125,7 +116,7 @@ export async function executePlan(
       continue;
     }
 
-    if (adapter.requiresUnsafe(step) && !unsafe) {
+    if (adapter.requiresUnsafe(boundStep) && !unsafe) {
       results.push({
         stepId: step.id,
         ok: false,
@@ -139,7 +130,14 @@ export async function executePlan(
 
     let outcome: ProcessOutcome;
     try {
-      const run = deps.run ?? runProcess;
+      const run =
+        deps.run ??
+        ((args: readonly string[]) =>
+          runProcess(args, { signal: deps.signal }).then((result) => ({
+            exitCode: result.exitCode,
+            stdout: result.stdout,
+            stderr: result.stderr,
+          })));
       outcome = await run(argv, step);
     } catch (error) {
       const detail = error instanceof Error ? error.message : String(error);
@@ -178,7 +176,8 @@ export async function executePlan(
       break;
     }
 
-    const spec = bindSpec(step.verify ?? adapter.defaultVerify(step), vars);
+    const spec =
+      step.verify !== undefined ? bindSpec(step.verify, vars) : adapter.defaultVerify(boundStep);
     const verify = deps.verify ?? verifyStep;
     const verified = await verify(executed, spec);
     results.push(verified);

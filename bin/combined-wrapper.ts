@@ -1,10 +1,11 @@
 #!/usr/bin/env bun
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { parseArgs, USAGE } from "../src/cli/args.js";
 import type { CliFlags } from "../src/cli/args.js";
 import { formatFinding, renderPlan } from "../src/cli/print.js";
 import { NAME, VERSION } from "../src/cli/version.js";
-import { validatePlan } from "../src/core/index.js";
+import { validateDag, validatePlan } from "../src/core/index.js";
 import type { PipelinePlan } from "../src/core/index.js";
 
 type LoadedPlan =
@@ -39,10 +40,19 @@ async function loadPlan(path: string): Promise<LoadedPlan> {
     return { ok: false, message: `invalid plan "${path}": ${reasons}` };
   }
 
+  const dag = validateDag(result.plan.steps);
+  if (!dag.ok) {
+    const reasons = dag.findings
+      .filter((finding) => finding.severity === "error")
+      .map((finding) => `${finding.code}: ${finding.message}`)
+      .join("; ");
+    return { ok: false, message: `invalid plan "${path}": ${reasons}` };
+  }
+
   return { ok: true, plan: result.plan };
 }
 
-async function printPlanFile(path: string): Promise<void> {
+async function printPlanFile(path: string, flags: CliFlags): Promise<void> {
   const loaded = await loadPlan(path);
   if (!loaded.ok) {
     console.error(`${NAME}: ${loaded.message}`);
@@ -50,7 +60,11 @@ async function printPlanFile(path: string): Promise<void> {
     return;
   }
 
-  const rendered = renderPlan(loaded.plan);
+  const rendered = renderPlan(loaded.plan, {
+    force: flags.force,
+    unsafe: flags.unsafe,
+    exists: existsSync,
+  });
   if (!rendered.ok) {
     for (const finding of rendered.findings) {
       if (finding.severity === "error") {
@@ -115,7 +129,7 @@ if (errors.length > 0) {
     console.error(USAGE);
     process.exitCode = 2;
   } else {
-    await printPlanFile(plan);
+    await printPlanFile(plan, flags);
   }
 } else if (plan !== undefined) {
   await startTui(plan, flags);
