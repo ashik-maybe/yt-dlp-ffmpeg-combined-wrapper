@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
+    "ink-testing-library": "^4.0.0",
     "oxfmt": "0.80.0",
     "oxlint": "1.95.0",
     "typescript": "~7.0.2",
