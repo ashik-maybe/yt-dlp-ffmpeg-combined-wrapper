@@ -103,12 +103,13 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 | `Enter`   | Review                  | Continue to confirm.             |
 | `Enter`   | Summary                 | Return to the picker.            |
 | `m`       | Picker                  | Open the More list.              |
-| `r`       | Review, Confirm         | Start the plan in `--run` mode.  |
+| `r`       | Review, Confirm         | Request a run. Needs `--run`.    |
 | `a`       | Confirm                 | Confirm execution.               |
 | `a`       | Progress                | Abort the run.                   |
 | `y`       | Confirm                 | Confirm execution.               |
 | `?`       | Any                     | Open or close help.              |
-| `Esc`     | Any                     | Go back or close help.           |
+| `Esc`     | Picker                  | Quit.                            |
+| `Esc`     | More, Review, Summary   | Go back or close help.           |
 | `q`       | Picker, Review, Confirm | Quit.                            |
 | `Ctrl+C`  | Any                     | Abort the current step and exit. |
 
@@ -138,12 +139,12 @@ Every plan starts as a dry-run.
 `--run` enables execution.
 `--print` writes the commands and starts no process.
 `--yes` removes the confirmation prompt.
-The overwrite guard blocks every declared output unless `--force` is set.
+The overwrite guard blocks an existing output unless `--force` is set.
 A step marked `unsafe` needs `--unsafe`.
 The yt-dlp adapter marks `exec`, `exec-before-download`, and `postprocessor-args` as unsafe.
 The ffmpeg adapter marks network inputs and script filters as unsafe.
 The tool binds placeholders before execution.
-An unbound placeholder blocks the step with `E_UNBOUND_VAR`.
+An unbound argument gives `E_UNBOUND_VAR`. Any other unbound field gives `E_BLOCKED`.
 The runner starts tool commands with argv arrays.
 Verification commands run through `/bin/sh`.
 Verification checks each output after its step.

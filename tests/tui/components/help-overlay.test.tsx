@@ -28,6 +28,7 @@ describe("HelpOverlay", () => {
       "esc",
       "q",
       "y",
+      "ctrl+c",
     ]);
 
     const view = render(<HelpOverlay narrow={false} onClose={() => {}} />);

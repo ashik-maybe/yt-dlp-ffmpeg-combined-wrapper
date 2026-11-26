@@ -34,7 +34,7 @@ Do not use `bun run format` as a check.
 It writes files.
 Use `bun run format:check` instead.
 The full gate is `bun run ci`.
-It runs lint, format check, typecheck, spec check, README check, and every test.
+It runs lint, format check, typecheck, spec check, README check, agents check, and every test.
 Run `bun run spec:check` after a data change.
 Run `bun run readme:check` after a README change.
 Run the full gate last.
@@ -43,7 +43,7 @@ Report the exact command and its output.
 ## Architecture
 
 Flow: `bin` to `src/cli` to `src/tui` to `src/core`.
-The planners and runner use `src/data` and `src/spec`.
+The planners bind recipe args. The data loader uses `src/data`. Tests read `src/spec`.
 
 - `bin/`: the single entry point. It parses flags, loads the plan, and starts print mode or the TUI.
 - `src/cli/`: flags, usage text, version, and print-mode rendering.
@@ -65,7 +65,7 @@ The planners and runner use `src/data` and `src/spec`.
 - Never execute by default. A process starts only with `--run`.
 - Bind variables before guard checks. An unbound name gives `E_BLOCKED` and `E_UNBOUND_VAR`.
 - `--force` allows an existing output overwrite. `--unsafe` allows guarded steps.
-- Both flags are off by default. A CLI flag overrides a plan default.
+- Both flags are off by default. Only a CLI flag turns them on.
 - Start tool commands with argv arrays, not a shell. Verification commands use `/bin/sh`.
 - Verify outputs after each step. A failed check stops the plan.
 - Keep all TUI text ASCII. The ASCII test scans every TUI file.
@@ -74,7 +74,7 @@ The planners and runner use `src/data` and `src/spec`.
 
 ## Add a recipe
 
-A recipe has `id`, `name`, `tool`, `args`, and optional `confidence`.
+A recipe has `id`, `name`, `tool`, `args`, and `confidence`.
 
 - Add a yt-dlp recipe to `src/data/yt-dlp/recipes.json`. This file holds one array.
 - Add an ffmpeg recipe as `src/data/ffmpeg/recipes/<id>.json`. The file name must equal the id.
@@ -99,7 +99,7 @@ Read [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) first.
 ## TUI rules
 
 - Use real handlers. Every `useInput` handler changes state or calls a callback. Delete a key when you delete its action.
-- Register every handled key in `HELP_KEYS` in `src/tui/components/help-overlay.tsx`. Repeat the main keys in the screen footer.
+- Register every handled key in `HELP_KEYS` in `src/tui/components/help-overlay.tsx`. Include Ctrl+C. Repeat the main keys in the screen footer.
 - Support the narrow layout. `isNarrow` is true below 80 columns. Hide hints and the log tail. Shorten the footer.
 - Draw the progress bar with `#` and `-`. Use 20 cells on wide terminals and 10 on narrow terminals. Show percent and `done/total`.
 - Keep global keys in `src/tui/app.tsx`. Screen files handle local keys only.
@@ -116,7 +116,7 @@ Read [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) first.
 ## Pitfalls
 
 - `bun run format` writes files. Use `bun run format:check` for a read-only check.
-- `spec-check` counts each object with `id`, `tool`, and `args` under `src/data` and `src/spec`. Test fixtures and catalog groups can change the total. The current total is 35 recipes.
+- `spec-check` counts each object with `id`, `tool`, and `args` under `src/data` and `src/spec`. Catalog groups are ignored. Each real recipe counts once. The current total is 35 recipes.
 - `scripts/capture-demo.sh` needs `vhs`, `ttyd`, and `ffmpeg`. It builds the binary first. The demo GIF must stay under 5 MB.
 - A failed release tag must be recreated. Delete the broken release first. Delete the local and remote tag. Tag the fixed commit again.
 - Do not edit `bun.lock` or any `package-lock.json` by hand. Run `bun install`.

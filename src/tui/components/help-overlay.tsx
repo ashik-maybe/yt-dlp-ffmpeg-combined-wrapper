@@ -18,6 +18,7 @@ export const HELP_KEYS: readonly HelpKey[] = [
   { keys: "esc", action: "close help, go back, abort, or quit" },
   { keys: "q", action: "quit" },
   { keys: "y", action: "approve in confirm" },
+  { keys: "ctrl+c", action: "abort the run and exit" },
 ];
 
 export interface HelpOverlayProps extends Pick<ScreenProps, "narrow"> {

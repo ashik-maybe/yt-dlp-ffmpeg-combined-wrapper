@@ -18,17 +18,12 @@ The core validates a plan before a run.
 | `steps`    | array  | yes      | The step list.                   |
 
 Version 1 plans run on Linux with the `posix` shell.
-The validator accepts `posix`, `powershell`, and `cmd` as shell names.
+The runner supports only the `posix` shell.
 
 ### defaults
 
-| Field    | Type    | Default |
-| -------- | ------- | ------- |
-| `force`  | boolean | `false` |
-| `unsafe` | boolean | `false` |
-
-A CLI flag overrides the matching default.
-Otherwise the default value applies.
+The CLI ignores `defaults.force` and `defaults.unsafe`.
+Use `--force` and `--unsafe` to change guard behavior.
 
 ## vars
 
@@ -95,7 +90,8 @@ An `alias` replaces `name`.
 The overwrite guard checks each entry.
 A later step can list the same path in `inputs`.
 Use a `{{var}}` placeholder for a path that changes per run.
-A step with outputs needs `--force` unless `defaults.force` is true.
+The guard checks each output that exists.
+A step with an existing output needs `--force`.
 
 ### dependsOn
 
@@ -199,6 +195,7 @@ Then it transcodes the file to H.264 MP4 with `ffmpeg`.
         { "kind": "option", "name": "-c:v", "value": "libx264" },
         { "kind": "option", "name": "-preset", "value": "medium" },
         { "kind": "option", "name": "-crf", "value": "23" },
+        { "kind": "option", "name": "-pix_fmt", "value": "yuv420p" },
         { "kind": "option", "name": "-c:a", "value": "aac" },
         { "kind": "option", "name": "-b:a", "value": "128k" },
         { "kind": "option", "name": "-movflags", "value": "+faststart" },
