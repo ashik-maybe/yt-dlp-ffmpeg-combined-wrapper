@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "tui:test": "vitest run tests/tui",
-    "ci": "bun run lint && bun run format && bun run format:check && bun run typecheck && bun run test && bun run tui:test"
+    "spec:check": "node scripts/spec-check.mjs",
+    "readme:check": "node scripts/readme-check.mjs",
+    "ci": "bun run lint && bun run format:check && bun run typecheck && bun run spec:check && bun run readme:check && bun run test && bun run tui:test"
   },
   "dependencies": {
     "ink": "^8.0.0",
