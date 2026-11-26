@@ -35,6 +35,8 @@ It writes files.
 Use `bun run format:check` instead.
 The full gate is `bun run ci`.
 It runs lint, format check, typecheck, spec check, README check, and every test.
+Run `bun run spec:check` after a data change.
+Run `bun run readme:check` after a README change.
 Run the full gate last.
 Report the exact command and its output.
 
@@ -61,7 +63,9 @@ The planners and runner use `src/data` and `src/spec`.
 ## Invariants
 
 - Never execute by default. A process starts only with `--run`.
-- Bind variables before guard checks. An unbound name gives `E_UNBOUND_VAR` and blocks the step.
+- Bind variables before guard checks. An unbound name gives `E_BLOCKED` and `E_UNBOUND_VAR`.
+- `--force` allows an existing output overwrite. `--unsafe` allows guarded steps.
+- Both flags are off by default. A CLI flag overrides a plan default.
 - Start tool commands with argv arrays, not a shell. Verification commands use `/bin/sh`.
 - Verify outputs after each step. A failed check stops the plan.
 - Keep all TUI text ASCII. The ASCII test scans every TUI file.
