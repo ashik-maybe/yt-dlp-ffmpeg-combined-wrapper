@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "id": "list-formats",
+  "name": "List available formats",
+  "shell": "posix",
+  "vars": {
+    "sourceUrl": "https://example.com/video"
+  },
+  "defaults": {
+    "force": false,
+    "unsafe": false
+  },
+  "steps": [
+    {
+      "id": "list-formats",
+      "tool": "yt-dlp",
+      "recipeId": "list-formats",
+      "args": [
+        { "kind": "flag", "name": "--list-formats" },
+        { "kind": "flag", "name": "--no-warnings" },
+        { "kind": "value", "name": "{{sourceUrl}}" }
+      ],
+      "verify": { "expectExitCode": 0 }
+    }
+  ]
+}

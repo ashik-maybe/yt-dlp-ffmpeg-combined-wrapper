@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "id": "trim-clip",
+  "name": "Trim a clip with stream copy",
+  "shell": "posix",
+  "vars": {
+    "inputPath": "in/source.mkv",
+    "outputPath": "out",
+    "startTime": "00:00:10",
+    "duration": "60"
+  },
+  "defaults": {
+    "force": false,
+    "unsafe": false
+  },
+  "steps": [
+    {
+      "id": "trim",
+      "tool": "ffmpeg",
+      "recipeId": "trim-copy",
+      "args": [
+        { "kind": "flag", "name": "-hide_banner" },
+        { "kind": "option", "name": "-ss", "value": "{{startTime}}" },
+        { "kind": "option", "name": "-i", "value": "{{inputPath}}" },
+        { "kind": "option", "name": "-t", "value": "{{duration}}" },
+        { "kind": "option", "name": "-c", "value": "copy" },
+        { "kind": "option", "name": "-avoid_negative_ts", "value": "make_zero" },
+        { "kind": "value", "name": "{{outputPath}}/clip.mp4" }
+      ],
+      "inputs": ["{{inputPath}}"],
+      "outputs": ["{{outputPath}}/clip.mp4"],
+      "verify": { "exists": ["{{outputPath}}/clip.mp4"] }
+    }
+  ]
+}

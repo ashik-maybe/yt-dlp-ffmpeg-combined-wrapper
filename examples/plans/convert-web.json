@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "id": "convert-web",
+  "name": "Convert a local file for the web",
+  "shell": "posix",
+  "vars": {
+    "inputPath": "in/source.mkv",
+    "outputPath": "out"
+  },
+  "defaults": {
+    "force": false,
+    "unsafe": false
+  },
+  "steps": [
+    {
+      "id": "scale",
+      "tool": "ffmpeg",
+      "recipeId": "scale-1080p",
+      "args": [
+        { "kind": "flag", "name": "-hide_banner" },
+        { "kind": "option", "name": "-i", "value": "{{inputPath}}" },
+        { "kind": "option", "name": "-vf", "value": "scale=-2:1080" },
+        { "kind": "option", "name": "-c:v", "value": "libx264" },
+        { "kind": "option", "name": "-preset", "value": "medium" },
+        { "kind": "option", "name": "-crf", "value": "21" },
+        { "kind": "option", "name": "-c:a", "value": "copy" },
+        { "kind": "value", "name": "{{outputPath}}/scaled.mp4" }
+      ],
+      "inputs": ["{{inputPath}}"],
+      "outputs": ["{{outputPath}}/scaled.mp4"],
+      "verify": { "exists": ["{{outputPath}}/scaled.mp4"] }
+    },
+    {
+      "id": "encode",
+      "tool": "ffmpeg",
+      "recipeId": "web-h264",
+      "args": [
+        { "kind": "flag", "name": "-hide_banner" },
+        { "kind": "option", "name": "-i", "value": "{{outputPath}}/scaled.mp4" },
+        { "kind": "option", "name": "-c:v", "value": "libx264" },
+        { "kind": "option", "name": "-preset", "value": "medium" },
+        { "kind": "option", "name": "-crf", "value": "23" },
+        { "kind": "option", "name": "-pix_fmt", "value": "yuv420p" },
+        { "kind": "option", "name": "-c:a", "value": "aac" },
+        { "kind": "option", "name": "-b:a", "value": "128k" },
+        { "kind": "option", "name": "-movflags", "value": "+faststart" },
+        { "kind": "value", "name": "{{outputPath}}/web.mp4" }
+      ],
+      "inputs": ["{{outputPath}}/scaled.mp4"],
+      "outputs": ["{{outputPath}}/web.mp4"],
+      "dependsOn": ["scale"],
+      "verify": { "exists": ["{{outputPath}}/web.mp4"] }
+    }
+  ]
+}

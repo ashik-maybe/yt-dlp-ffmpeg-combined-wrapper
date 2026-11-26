@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "id": "download-audio",
+  "name": "Download audio and convert to WAV",
+  "shell": "posix",
+  "vars": {
+    "sourceUrl": "https://example.com/audio",
+    "outputPath": "out"
+  },
+  "defaults": {
+    "force": false,
+    "unsafe": false
+  },
+  "steps": [
+    {
+      "id": "download",
+      "tool": "yt-dlp",
+      "recipeId": "audio-m4a",
+      "args": [
+        { "kind": "flag", "name": "--extract-audio" },
+        { "kind": "option", "name": "--audio-format", "value": "m4a" },
+        { "kind": "option", "name": "--audio-quality", "value": "0" },
+        { "kind": "option", "name": "-o", "values": ["{{outputPath}}/source.%(ext)s"] },
+        { "kind": "value", "name": "{{sourceUrl}}" }
+      ],
+      "outputs": ["{{outputPath}}/source.m4a"],
+      "verify": { "exists": ["{{outputPath}}/source.m4a"] }
+    },
+    {
+      "id": "convert",
+      "tool": "ffmpeg",
+      "recipeId": "audio-wav",
+      "args": [
+        { "kind": "flag", "name": "-hide_banner" },
+        { "kind": "option", "name": "-i", "value": "{{outputPath}}/source.m4a" },
+        { "kind": "flag", "name": "-vn" },
+        { "kind": "option", "name": "-c:a", "value": "pcm_s16le" },
+        { "kind": "option", "name": "-ar", "value": "48000" },
+        { "kind": "option", "name": "-ac", "value": "2" },
+        { "kind": "value", "name": "{{outputPath}}/audio.wav" }
+      ],
+      "inputs": ["{{outputPath}}/source.m4a"],
+      "outputs": ["{{outputPath}}/audio.wav"],
+      "dependsOn": ["download"],
+      "verify": { "exists": ["{{outputPath}}/audio.wav"] }
+    }
+  ]
+}
