@@ -1,0 +1,327 @@
+{
+  "tool": "yt-dlp",
+  "version": "2026.11.23",
+  "docs": "https://github.com/yt-dlp/yt-dlp/blob/2026.11.23/README.md",
+  "options": [
+    {
+      "name": "--quiet",
+      "alias": "-q",
+      "kind": "flag",
+      "category": "general",
+      "description": "Suppress console output."
+    },
+    {
+      "name": "--no-warnings",
+      "kind": "flag",
+      "category": "general",
+      "description": "Ignore warning messages."
+    },
+    {
+      "name": "--no-progress",
+      "kind": "flag",
+      "category": "general",
+      "description": "Do not show the progress bar."
+    },
+    {
+      "name": "--simulate",
+      "alias": "-s",
+      "kind": "flag",
+      "category": "general",
+      "description": "Do not download. Simulate only."
+    },
+    {
+      "name": "--print",
+      "alias": "-O",
+      "kind": "option",
+      "value": "TEMPLATE",
+      "category": "general",
+      "description": "Print a field or template to standard output."
+    },
+    {
+      "name": "--ignore-errors",
+      "alias": "-i",
+      "kind": "flag",
+      "category": "general",
+      "description": "Continue after download and post-processing errors."
+    },
+    {
+      "name": "--flat-playlist",
+      "kind": "flag",
+      "category": "selection",
+      "description": "Do not extract the entries of a playlist."
+    },
+    {
+      "name": "--no-playlist",
+      "kind": "flag",
+      "category": "selection",
+      "description": "Download only the video when the URL has a playlist."
+    },
+    {
+      "name": "--yes-playlist",
+      "kind": "flag",
+      "category": "selection",
+      "description": "Download the playlist when the URL has a video."
+    },
+    {
+      "name": "--playlist-items",
+      "alias": "-I",
+      "kind": "option",
+      "value": "ITEM_SPEC",
+      "category": "selection",
+      "description": "Select playlist items by index or range."
+    },
+    {
+      "name": "--max-downloads",
+      "kind": "option",
+      "value": "NUMBER",
+      "category": "selection",
+      "description": "Stop after the given number of downloads."
+    },
+    {
+      "name": "--download-archive",
+      "kind": "option",
+      "value": "FILE",
+      "category": "selection",
+      "description": "Record and skip videos that are already downloaded."
+    },
+    {
+      "name": "--proxy",
+      "kind": "option",
+      "value": "URL",
+      "category": "network",
+      "description": "Use the given HTTP, HTTPS, or SOCKS proxy."
+    },
+    {
+      "name": "--limit-rate",
+      "alias": "-r",
+      "kind": "option",
+      "value": "RATE",
+      "category": "network",
+      "description": "Limit the download rate in bytes per second."
+    },
+    {
+      "name": "--retries",
+      "alias": "-R",
+      "kind": "option",
+      "value": "RETRIES",
+      "category": "network",
+      "description": "Set the number of download retries."
+    },
+    {
+      "name": "--concurrent-fragments",
+      "alias": "-N",
+      "kind": "option",
+      "value": "N",
+      "category": "network",
+      "description": "Set the number of concurrent fragment downloads."
+    },
+    {
+      "name": "--cookies-from-browser",
+      "kind": "option",
+      "value": "BROWSER",
+      "category": "network",
+      "description": "Load cookies from a browser profile."
+    },
+    {
+      "name": "--output",
+      "alias": "-o",
+      "kind": "option",
+      "value": "[TYPES:]TEMPLATE",
+      "category": "filesystem",
+      "description": "Set the output filename template."
+    },
+    {
+      "name": "--paths",
+      "alias": "-P",
+      "kind": "option",
+      "value": "[TYPES:]PATH",
+      "category": "filesystem",
+      "description": "Set the download path."
+    },
+    {
+      "name": "--restrict-filenames",
+      "kind": "flag",
+      "category": "filesystem",
+      "description": "Use ASCII-only filenames without spaces or ampersands."
+    },
+    {
+      "name": "--no-overwrites",
+      "alias": "-w",
+      "kind": "flag",
+      "category": "filesystem",
+      "description": "Do not overwrite existing files."
+    },
+    {
+      "name": "--no-mtime",
+      "kind": "flag",
+      "category": "filesystem",
+      "description": "Do not set the file time from the server."
+    },
+    {
+      "name": "--write-info-json",
+      "kind": "flag",
+      "category": "filesystem",
+      "description": "Write video metadata to an info JSON file."
+    },
+    {
+      "name": "--write-thumbnail",
+      "kind": "flag",
+      "category": "filesystem",
+      "description": "Write the thumbnail image to disk."
+    },
+    {
+      "name": "--convert-thumbnails",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "filesystem",
+      "description": "Convert thumbnails to another image format."
+    },
+    {
+      "name": "--format",
+      "alias": "-f",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "format",
+      "description": "Select the video format with a format expression."
+    },
+    {
+      "name": "--format-sort",
+      "alias": "-S",
+      "kind": "option",
+      "value": "SORTORDER",
+      "category": "format",
+      "description": "Sort formats by the given fields."
+    },
+    {
+      "name": "--merge-output-format",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "format",
+      "description": "Set the container for merged output."
+    },
+    {
+      "name": "--list-formats",
+      "alias": "-F",
+      "kind": "flag",
+      "category": "format",
+      "description": "List all available formats."
+    },
+    {
+      "name": "--remux-video",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "format",
+      "description": "Remux the video into another container."
+    },
+    {
+      "name": "--recode-video",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "format",
+      "description": "Re-encode the video into another format."
+    },
+    {
+      "name": "--download-sections",
+      "kind": "option",
+      "value": "REGEX",
+      "category": "format",
+      "description": "Download only chapters or time ranges that match."
+    },
+    {
+      "name": "--force-keyframes-at-cuts",
+      "kind": "flag",
+      "category": "format",
+      "description": "Force keyframes at cut points."
+    },
+    {
+      "name": "--write-subs",
+      "kind": "flag",
+      "category": "subtitle",
+      "description": "Write subtitle files."
+    },
+    {
+      "name": "--write-auto-subs",
+      "kind": "flag",
+      "category": "subtitle",
+      "description": "Write automatic subtitle files."
+    },
+    {
+      "name": "--list-subs",
+      "kind": "flag",
+      "category": "subtitle",
+      "description": "List available subtitles."
+    },
+    {
+      "name": "--sub-langs",
+      "kind": "option",
+      "value": "LANGS",
+      "category": "subtitle",
+      "description": "Select subtitle languages by code or regex."
+    },
+    {
+      "name": "--sub-format",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "subtitle",
+      "description": "Set the subtitle format preference."
+    },
+    {
+      "name": "--convert-subs",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "subtitle",
+      "description": "Convert subtitles to another format."
+    },
+    {
+      "name": "--embed-subs",
+      "kind": "flag",
+      "category": "subtitle",
+      "description": "Embed subtitles into the video file."
+    },
+    {
+      "name": "--extract-audio",
+      "alias": "-x",
+      "kind": "flag",
+      "category": "post-processing",
+      "description": "Extract audio and discard the video."
+    },
+    {
+      "name": "--audio-format",
+      "kind": "option",
+      "value": "FORMAT",
+      "category": "post-processing",
+      "description": "Set the audio format for extraction."
+    },
+    {
+      "name": "--audio-quality",
+      "kind": "option",
+      "value": "QUALITY",
+      "category": "post-processing",
+      "description": "Set the audio quality for extraction."
+    },
+    {
+      "name": "--embed-thumbnail",
+      "kind": "flag",
+      "category": "post-processing",
+      "description": "Embed the thumbnail as cover art."
+    },
+    {
+      "name": "--embed-metadata",
+      "kind": "flag",
+      "category": "post-processing",
+      "description": "Embed metadata into the media file."
+    },
+    {
+      "name": "--skip-download",
+      "kind": "flag",
+      "category": "post-processing",
+      "description": "Do not download the video."
+    },
+    {
+      "name": "--live-from-start",
+      "kind": "flag",
+      "category": "live",
+      "description": "Download a live stream from the start."
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+[
+  {
+    "id": "best-video",
+    "name": "Best video and audio",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--format", "value": "bv*+ba/b" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "flag", "name": "--no-playlist" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "audio-mp3",
+    "name": "Audio to MP3",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--extract-audio" },
+      { "kind": "option", "name": "--audio-format", "value": "mp3" },
+      { "kind": "option", "name": "--audio-quality", "value": "0" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "list-formats",
+    "name": "List formats",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--list-formats" },
+      { "kind": "flag", "name": "--no-warnings" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "subtitles-only",
+    "name": "Subtitles only",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--skip-download" },
+      { "kind": "flag", "name": "--write-subs" },
+      { "kind": "flag", "name": "--write-auto-subs" },
+      { "kind": "option", "name": "--sub-langs", "value": "en.*" },
+      { "kind": "option", "name": "--sub-format", "value": "srt/best" },
+      { "kind": "option", "name": "--convert-subs", "value": "srt" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "playlist-range",
+    "name": "Playlist range",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--playlist-items", "value": "1:10" },
+      { "kind": "flag", "name": "--yes-playlist" },
+      { "kind": "flag", "name": "--ignore-errors" },
+      {
+        "kind": "option",
+        "name": "--output",
+        "value": "{{outputPath}}/%(playlist_title)s/%(playlist_index)03d - %(title)s.%(ext)s"
+      },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "clip-by-section",
+    "name": "Clip by time range",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--download-sections", "value": "*00:01:00-00:02:00" },
+      { "kind": "flag", "name": "--force-keyframes-at-cuts" },
+      { "kind": "option", "name": "--format", "value": "bv*+ba/b" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mp4" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s - clip.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "video-1080p",
+    "name": "Video up to 1080p",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--format", "value": "bv*[height<=1080]+ba/b[height<=1080]" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "video-720p",
+    "name": "Video up to 720p",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--format", "value": "bv*[height<=720]+ba/b[height<=720]" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "video-mp4",
+    "name": "MP4 video",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--format", "value": "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mp4" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "audio-m4a",
+    "name": "Audio to M4A",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--extract-audio" },
+      { "kind": "option", "name": "--audio-format", "value": "m4a" },
+      { "kind": "option", "name": "--audio-quality", "value": "0" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "audio-opus",
+    "name": "Audio to Opus",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--extract-audio" },
+      { "kind": "option", "name": "--audio-format", "value": "opus" },
+      { "kind": "option", "name": "--audio-quality", "value": "0" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "audio-flac",
+    "name": "Audio to FLAC",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--extract-audio" },
+      { "kind": "option", "name": "--audio-format", "value": "flac" },
+      { "kind": "option", "name": "--audio-quality", "value": "0" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "playlist-mp3",
+    "name": "Playlist to MP3",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--yes-playlist" },
+      { "kind": "flag", "name": "--extract-audio" },
+      { "kind": "option", "name": "--audio-format", "value": "mp3" },
+      { "kind": "option", "name": "--audio-quality", "value": "0" },
+      {
+        "kind": "option",
+        "name": "--output",
+        "value": "{{outputPath}}/%(playlist_title)s/%(playlist_index)03d - %(title)s.%(ext)s"
+      },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "subtitles-embed",
+    "name": "Embed subtitles",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--write-subs" },
+      { "kind": "flag", "name": "--embed-subs" },
+      { "kind": "option", "name": "--sub-langs", "value": "en.*" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "thumbnail-only",
+    "name": "Thumbnail only",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--skip-download" },
+      { "kind": "flag", "name": "--write-thumbnail" },
+      { "kind": "option", "name": "--convert-thumbnails", "value": "jpg" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "metadata-json",
+    "name": "Metadata JSON",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--skip-download" },
+      { "kind": "flag", "name": "--write-info-json" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "archive-download",
+    "name": "Archive downloads",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--download-archive", "value": "{{outputPath}}/archive.txt" },
+      { "kind": "flag", "name": "--no-overwrites" },
+      { "kind": "option", "name": "--format", "value": "bv*+ba/b" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "live-from-start",
+    "name": "Live stream from start",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--live-from-start" },
+      { "kind": "option", "name": "--format", "value": "bv*+ba/b" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "private-cookies",
+    "name": "Private video with cookies",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--cookies-from-browser", "value": "firefox" },
+      { "kind": "option", "name": "--format", "value": "bv*+ba/b" },
+      { "kind": "option", "name": "--merge-output-format", "value": "mkv" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "clip-mp3",
+    "name": "Clip to MP3",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "option", "name": "--download-sections", "value": "*00:00:30-00:01:00" },
+      { "kind": "flag", "name": "--extract-audio" },
+      { "kind": "option", "name": "--audio-format", "value": "mp3" },
+      { "kind": "option", "name": "--audio-quality", "value": "0" },
+      { "kind": "option", "name": "--output", "value": "{{outputPath}}/%(title)s - clip.%(ext)s" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  },
+  {
+    "id": "list-subs",
+    "name": "List subtitles",
+    "tool": "yt-dlp",
+    "args": [
+      { "kind": "flag", "name": "--list-subs" },
+      { "kind": "flag", "name": "--no-warnings" },
+      { "kind": "value", "name": "{{sourceUrl}}" }
+    ],
+    "confidence": "validated"
+  }
+]
