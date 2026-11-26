@@ -64,11 +64,7 @@ export function Progress({ steps, logs = [], narrow, version }: ProgressProps) {
       </Text>
       <Box flexDirection="column" marginTop={1}>
         {steps.map((step) => (
-          <Text
-            key={step.id}
-            color={STEP_COLOR[step.status]}
-            dimColor={step.status === "pending"}
-          >
+          <Text key={step.id} color={STEP_COLOR[step.status]} dimColor={step.status === "pending"}>
             {STEP_MARK[step.status]} {step.label} ({step.status})
           </Text>
         ))}

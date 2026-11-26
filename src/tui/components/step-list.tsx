@@ -22,9 +22,10 @@ export function StepList({ steps, selectedId, narrow, title = "Steps" }: StepLis
           return (
             <Box key={step.id} flexDirection="column">
               <Text bold={selected} color={selected ? theme.accent : undefined}>
-                {selected ? ">" : " "} {index + 1}. {statusMark(step.status)} {step.label} [{step.tool}]
+                {selected ? ">" : " "} {index + 1}. {statusMark(step.status)} {step.label} [
+                {step.tool}]
               </Text>
-              {narrow ? null : <Text dimColor>    {step.command}</Text>}
+              {narrow ? null : <Text dimColor> {step.command}</Text>}
             </Box>
           );
         })

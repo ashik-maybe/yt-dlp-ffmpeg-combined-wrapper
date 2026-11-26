@@ -40,10 +40,7 @@ function bindArg(arg: PlanArg, vars: Readonly<Record<string, string>>): PlanArg 
   };
 }
 
-function unboundFindings(
-  step: Step,
-  vars: Readonly<Record<string, string>>,
-): readonly Finding[] {
+function unboundFindings(step: Step, vars: Readonly<Record<string, string>>): readonly Finding[] {
   const findings: Finding[] = [];
   const seen = new Set<string>();
   for (const arg of step.args) {

@@ -7,24 +7,9 @@ import { ffmpegAdapter } from "../planners/ffmpeg/index.js";
 import { ytDlpAdapter } from "../planners/yt-dlp/index.js";
 import { executePlan } from "../runner/index.js";
 import { Chrome, HelpOverlay } from "./components/index.js";
-import {
-  Confirm,
-  More,
-  MORE_TASK_ID,
-  Picker,
-  Progress,
-  Review,
-  Summary,
-} from "./screens/index.js";
+import { Confirm, More, MORE_TASK_ID, Picker, Progress, Review, Summary } from "./screens/index.js";
 import { isNarrow } from "./theme.js";
-import type {
-  ScreenName,
-  ScreenProps,
-  StepStatus,
-  StepView,
-  TaskItem,
-  TuiProps,
-} from "./types.js";
+import type { ScreenName, ScreenProps, StepStatus, StepView, TaskItem, TuiProps } from "./types.js";
 
 /** One request to run a whole plan. */
 export interface RunRequest {
@@ -75,7 +60,9 @@ function bindArg(arg: PlanArg, vars: Readonly<Record<string, string>>): PlanArg 
     kind: arg.kind,
     name: bindText(arg.name, vars),
     ...(arg.value !== undefined ? { value: bindText(arg.value, vars) } : {}),
-    ...(arg.values !== undefined ? { values: arg.values.map((value) => bindText(value, vars)) } : {}),
+    ...(arg.values !== undefined
+      ? { values: arg.values.map((value) => bindText(value, vars)) }
+      : {}),
     ...(arg.alias !== undefined ? { alias: bindText(arg.alias, vars) } : {}),
   };
 }
@@ -86,7 +73,10 @@ function buildViews(plan: PipelinePlan): StepView[] {
     id: step.id,
     tool: step.tool,
     label: step.recipeId ?? step.id,
-    command: renderCommand(step.tool, step.args.map((arg) => bindArg(arg, vars))).join(" "),
+    command: renderCommand(
+      step.tool,
+      step.args.map((arg) => bindArg(arg, vars)),
+    ).join(" "),
     status: "pending",
   }));
 }
@@ -179,8 +169,7 @@ export function App(props: AppProps) {
           return withStatus(view, result.ok ? "ok" : "failed");
         }),
       );
-      const ok =
-        results.length === plan.steps.length && results.every((result) => result.ok);
+      const ok = results.length === plan.steps.length && results.every((result) => result.ok);
       setLogs((current) => [
         ...current,
         `Finished: ${results.filter((result) => result.ok).length}/${plan.steps.length} ok`,
@@ -369,16 +358,24 @@ export function App(props: AppProps) {
 
   function footer(): string {
     if (screen === "picker") {
-      return narrow ? "Enter select · m more · ? help · q quit" : "Up/Down move · Enter select · m more · ? help · q quit";
+      return narrow
+        ? "Enter select · m more · ? help · q quit"
+        : "Up/Down move · Enter select · m more · ? help · q quit";
     }
     if (screen === "more") {
-      return narrow ? "Type search · Esc back · ? help" : "Type to search · Up/Down move · Enter select · Esc back · ? help";
+      return narrow
+        ? "Type search · Esc back · ? help"
+        : "Type to search · Up/Down move · Enter select · Esc back · ? help";
     }
     if (screen === "review") {
-      return narrow ? "Enter next · r run · Esc back · ? help" : "Up/Down select · Enter next · r run · Esc back · ? help · q quit";
+      return narrow
+        ? "Enter next · r run · Esc back · ? help"
+        : "Up/Down select · Enter next · r run · Esc back · ? help · q quit";
     }
     if (screen === "confirm") {
-      return narrow ? "y/a approve · Esc back · ? help" : "y/a approve · Esc back · ? help · q quit";
+      return narrow
+        ? "y/a approve · Esc back · ? help"
+        : "y/a approve · Esc back · ? help · q quit";
     }
     if (screen === "progress") {
       return narrow ? "a abort · ? help · q quit" : "a or Esc abort · ? help · q quit";

@@ -75,7 +75,7 @@ export function More({ tasks, selectedId, onSelect, onBack, narrow, version }: S
         </Box>
       </Box>
       <Box marginTop={1}>
-        <Text dimColor>Type to search  Up/Down move  Enter select  Esc back</Text>
+        <Text dimColor>Type to search Up/Down move Enter select Esc back</Text>
       </Box>
     </Box>
   );

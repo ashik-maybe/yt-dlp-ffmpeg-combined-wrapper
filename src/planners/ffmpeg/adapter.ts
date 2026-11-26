@@ -5,8 +5,7 @@ import type { PlanArg, Step, VerifySpec } from "../../core/index.js";
 const STREAM_FORMATS: readonly string[] = ["hls", "dash"];
 const FILTER_SCRIPT_OPTIONS: readonly string[] = ["filter_script", "filter_complex_script"];
 
-const NETWORK_SCHEME_RE =
-  /(?:^|[^a-z0-9+.-])(?:rtmps|rtmp|hls|dash|srt)(?:\+[a-z0-9.+-]+)?:\/\//i;
+const NETWORK_SCHEME_RE = /(?:^|[^a-z0-9+.-])(?:rtmps|rtmp|hls|dash|srt)(?:\+[a-z0-9.+-]+)?:\/\//i;
 const STREAM_EXTENSION_RE = /\.(?:m3u8|mpd)(?:[?#]|$)/i;
 
 const PROBE_ARGS: readonly string[] = [

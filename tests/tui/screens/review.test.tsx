@@ -99,9 +99,7 @@ describe("Review", () => {
   it("continues on Enter and goes back on Escape", async () => {
     const props = screenProps();
     const onContinue = vi.fn();
-    const view = render(
-      <Review {...props} steps={steps} findings={[]} onContinue={onContinue} />,
-    );
+    const view = render(<Review {...props} steps={steps} findings={[]} onContinue={onContinue} />);
 
     view.stdin.write("\r");
     expect(onContinue).toHaveBeenCalledTimes(1);

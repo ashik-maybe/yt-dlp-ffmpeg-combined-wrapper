@@ -25,15 +25,14 @@ function bindArg(arg: PlanArg, vars: Readonly<Record<string, string>>): PlanArg 
     kind: arg.kind,
     name: bindText(arg.name, vars),
     ...(arg.value !== undefined ? { value: bindText(arg.value, vars) } : {}),
-    ...(arg.values !== undefined ? { values: arg.values.map((value) => bindText(value, vars)) } : {}),
+    ...(arg.values !== undefined
+      ? { values: arg.values.map((value) => bindText(value, vars)) }
+      : {}),
     ...(arg.alias !== undefined ? { alias: bindText(arg.alias, vars) } : {}),
   };
 }
 
-function unboundFindings(
-  step: Step,
-  vars: Readonly<Record<string, string>>,
-): readonly Finding[] {
+function unboundFindings(step: Step, vars: Readonly<Record<string, string>>): readonly Finding[] {
   const findings: Finding[] = [];
   const seen = new Set<string>();
   for (const arg of step.args) {
@@ -84,10 +83,7 @@ export function defaultVerify(step: Step): VerifySpec {
   return { expectExitCode: 0 };
 }
 
-export function planFromStep(
-  step: Step,
-  vars: Readonly<Record<string, string>>,
-): StepResolution {
+export function planFromStep(step: Step, vars: Readonly<Record<string, string>>): StepResolution {
   const findings: Finding[] = [];
   if (step.tool !== TOOL) {
     findings.push({

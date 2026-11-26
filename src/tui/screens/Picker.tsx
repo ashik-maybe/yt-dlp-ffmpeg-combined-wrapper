@@ -60,7 +60,7 @@ export function Picker({ tasks, selectedId, onSelect, narrow, version }: ScreenP
       </Box>
       <Box marginTop={1}>
         <Text dimColor>
-          Up/Down move  Enter select
+          Up/Down move Enter select
           {narrow ? "" : "  More tasks: search all"}
         </Text>
       </Box>

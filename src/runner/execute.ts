@@ -1,13 +1,6 @@
 import { spawn } from "node:child_process";
 import { bindText, renderCommand, topoOrder, validateDag } from "../core/index.js";
-import type {
-  Finding,
-  PipelinePlan,
-  Step,
-  StepResult,
-  Tool,
-  VerifySpec,
-} from "../core/index.js";
+import type { Finding, PipelinePlan, Step, StepResult, Tool, VerifySpec } from "../core/index.js";
 import type { ToolAdapter } from "../contracts/index.js";
 import { verifyStep } from "./verify.js";
 
@@ -57,10 +50,7 @@ function runProcess(argv: readonly string[]): Promise<ProcessOutcome> {
   });
 }
 
-function bindSpec(
-  spec: VerifySpec,
-  vars: Readonly<Record<string, string>>,
-): VerifySpec {
+function bindSpec(spec: VerifySpec, vars: Readonly<Record<string, string>>): VerifySpec {
   const bound: {
     command?: string;
     exists?: readonly string[];

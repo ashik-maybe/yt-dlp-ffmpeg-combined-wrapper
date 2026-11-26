@@ -28,7 +28,10 @@ function loadRecipes(): readonly RawRecipe[] {
   }));
 }
 
-function recipeArgs(data: Record<string, unknown>, file: string): readonly Record<string, unknown>[] {
+function recipeArgs(
+  data: Record<string, unknown>,
+  file: string,
+): readonly Record<string, unknown>[] {
   return array(data.args, `${file}.args`).map((raw, index) =>
     record(raw, `${file}.args[${index}]`),
   );
@@ -170,7 +173,10 @@ describe("ffmpeg recipe data", () => {
     for (const { file, data } of RECIPES) {
       const recipe = data as unknown as Recipe;
       expect(recipe.id, file).toBe(text(data.id, file));
-      expect(recipe.args.every((arg: PlanArg) => KINDS.includes(arg.kind)), file).toBe(true);
+      expect(
+        recipe.args.every((arg: PlanArg) => KINDS.includes(arg.kind)),
+        file,
+      ).toBe(true);
     }
   });
 });

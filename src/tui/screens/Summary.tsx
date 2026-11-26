@@ -21,12 +21,7 @@ const VERIFY_COLOR: Readonly<Record<VerifyOutcome, string>> = {
 };
 
 /** Screen that shows the final result, verification, and failed steps. */
-export function Summary({
-  steps,
-  verification = "skipped",
-  verifyCommand,
-  onQuit,
-}: SummaryProps) {
+export function Summary({ steps, verification = "skipped", verifyCommand, onQuit }: SummaryProps) {
   const { exit } = useApp();
   const failedSteps = steps.filter((step) => step.status === "failed");
   const done = steps.filter((step) => step.status === "ok").length;

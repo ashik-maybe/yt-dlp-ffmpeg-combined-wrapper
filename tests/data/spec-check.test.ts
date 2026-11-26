@@ -61,10 +61,7 @@ describe("checkSpecs", () => {
     });
     await writeFile(path.join(workDir, "data", "notes.txt"), "ignored", "utf8");
 
-    const result = await checkSpecs([
-      path.join(workDir, "data"),
-      path.join(workDir, "spec"),
-    ]);
+    const result = await checkSpecs([path.join(workDir, "data"), path.join(workDir, "spec")]);
 
     expect(result.ok).toBe(true);
     expect(result.files).toHaveLength(3);
@@ -96,10 +93,7 @@ describe("checkSpecs", () => {
       { id: "dup", name: "Two", tool: "yt-dlp", args: [] },
     ]);
 
-    const result = await checkSpecs([
-      path.join(workDir, "data"),
-      path.join(workDir, "spec"),
-    ]);
+    const result = await checkSpecs([path.join(workDir, "data"), path.join(workDir, "spec")]);
 
     expect(result.ok).toBe(false);
     expect(result.recipeCount).toBe(2);
@@ -122,12 +116,8 @@ describe("checkSpecs", () => {
 
 describe("spec-check CLI", () => {
   it("exits 0 and prints counts by tool", async () => {
-    await writeJson("data/ffmpeg.json", [
-      { id: "ff-1", name: "Scale", tool: "ffmpeg", args: [] },
-    ]);
-    await writeJson("spec/yt-dlp.json", [
-      { id: "yt-1", name: "Audio", tool: "yt-dlp", args: [] },
-    ]);
+    await writeJson("data/ffmpeg.json", [{ id: "ff-1", name: "Scale", tool: "ffmpeg", args: [] }]);
+    await writeJson("spec/yt-dlp.json", [{ id: "yt-1", name: "Audio", tool: "yt-dlp", args: [] }]);
 
     const run = spawnSync(
       process.execPath,

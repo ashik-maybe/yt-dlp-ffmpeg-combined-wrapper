@@ -94,10 +94,7 @@ describe("yt-dlp planner", () => {
   });
 
   it("reports a tool mismatch finding", () => {
-    const result = ytDlpAdapter.planFromStep(
-      stepFrom(VIDEO_RECIPE, { tool: "ffmpeg" }),
-      VARS,
-    );
+    const result = ytDlpAdapter.planFromStep(stepFrom(VIDEO_RECIPE, { tool: "ffmpeg" }), VARS);
 
     expect(result.findings).toEqual([
       {

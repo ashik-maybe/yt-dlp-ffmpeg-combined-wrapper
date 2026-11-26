@@ -35,11 +35,7 @@ export function HelpOverlay({ narrow, onClose }: HelpOverlayProps) {
         Help - press ? or Esc to close
       </Text>
       {HELP_KEYS.map((entry) => (
-        <Box
-          key={entry.keys}
-          flexDirection={narrow ? "column" : "row"}
-          columnGap={narrow ? 0 : 2}
-        >
+        <Box key={entry.keys} flexDirection={narrow ? "column" : "row"} columnGap={narrow ? 0 : 2}>
           <Text color={theme.accent}>{entry.keys}</Text>
           <Text>{entry.action}</Text>
         </Box>

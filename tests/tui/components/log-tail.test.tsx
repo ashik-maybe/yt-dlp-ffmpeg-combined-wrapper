@@ -20,7 +20,12 @@ describe("LogTail", () => {
 
   it("uses a custom title and shows every line that fits", () => {
     const view = render(
-      <LogTail lines={["ffmpeg version 8.0", "stream mapping"]} maxLines={8} narrow={false} title="Output" />,
+      <LogTail
+        lines={["ffmpeg version 8.0", "stream mapping"]}
+        maxLines={8}
+        narrow={false}
+        title="Output"
+      />,
     );
     const frame = view.lastFrame() ?? "";
 

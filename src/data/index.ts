@@ -58,7 +58,10 @@ function toRecipe(value: unknown, tool: Tool, file: string): Recipe {
     throw new Error(`${file}: recipe "${id}" needs args`);
   }
   const confidence = value.confidence;
-  if (confidence !== undefined && (typeof confidence !== "string" || !CONFIDENCES.has(confidence))) {
+  if (
+    confidence !== undefined &&
+    (typeof confidence !== "string" || !CONFIDENCES.has(confidence))
+  ) {
     throw new Error(`${file}: recipe "${id}" has an invalid confidence`);
   }
   return {

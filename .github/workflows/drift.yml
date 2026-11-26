@@ -2,7 +2,7 @@ name: Drift
 
 on:
   schedule:
-    - cron: '0 9 * * 1'
+    - cron: "0 9 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -130,8 +130,8 @@ jobs:
           delete-branch: true
           add-paths: |
             src/spec
-          title: 'chore(spec): refresh upstream spec data'
-          commit-message: 'chore(spec): refresh upstream spec data'
+          title: "chore(spec): refresh upstream spec data"
+          commit-message: "chore(spec): refresh upstream spec data"
           body: |
             Automated weekly drift check.
 

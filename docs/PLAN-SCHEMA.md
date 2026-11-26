@@ -7,15 +7,15 @@ The core validates a plan before a run.
 
 ## Plan fields
 
-| Field      | Type   | Required | Notes                          |
-| ---------- | ------ | -------- | ------------------------------ |
-| `version`  | `1`    | yes      | Schema version.                |
-| `id`       | string | yes      | Stable plan id.                |
-| `name`     | string | yes      | Human-readable name.           |
+| Field      | Type   | Required | Notes                            |
+| ---------- | ------ | -------- | -------------------------------- |
+| `version`  | `1`    | yes      | Schema version.                  |
+| `id`       | string | yes      | Stable plan id.                  |
+| `name`     | string | yes      | Human-readable name.             |
 | `shell`    | string | yes      | `posix`, `powershell`, or `cmd`. |
-| `vars`     | object | no       | String values for placeholders. |
-| `defaults` | object | no       | Default guard values.          |
-| `steps`    | array  | yes      | The step list.                 |
+| `vars`     | object | no       | String values for placeholders.  |
+| `defaults` | object | no       | Default guard values.            |
+| `steps`    | array  | yes      | The step list.                   |
 
 Version 1 plans run on Linux with the `posix` shell.
 The validator accepts `posix`, `powershell`, and `cmd` as shell names.
@@ -54,17 +54,17 @@ Example:
 
 Each step is one command for `yt-dlp` or `ffmpeg`.
 
-| Field       | Type     | Required | Notes                           |
-| ----------- | -------- | -------- | ------------------------------- |
-| `id`        | string   | yes      | Must be unique in the plan.     |
-| `tool`      | string   | yes      | `yt-dlp` or `ffmpeg`.           |
-| `recipeId`  | string   | no       | Recipe that produced the step.  |
-| `args`      | array    | yes      | Argument list.                  |
-| `inputs`    | string[] | no       | Input paths for the step.       |
-| `outputs`   | string[] | no       | Expected output paths.          |
-| `dependsOn` | string[] | no       | Step ids that must run first.   |
-| `unsafe`    | boolean  | no       | The step needs `--unsafe`.      |
-| `verify`    | object   | no       | Post-run output check.          |
+| Field       | Type     | Required | Notes                          |
+| ----------- | -------- | -------- | ------------------------------ |
+| `id`        | string   | yes      | Must be unique in the plan.    |
+| `tool`      | string   | yes      | `yt-dlp` or `ffmpeg`.          |
+| `recipeId`  | string   | no       | Recipe that produced the step. |
+| `args`      | array    | yes      | Argument list.                 |
+| `inputs`    | string[] | no       | Input paths for the step.      |
+| `outputs`   | string[] | no       | Expected output paths.         |
+| `dependsOn` | string[] | no       | Step ids that must run first.  |
+| `unsafe`    | boolean  | no       | The step needs `--unsafe`.     |
+| `verify`    | object   | no       | Post-run output check.         |
 
 `recipeId` is metadata.
 The runner does not look it up.
@@ -73,13 +73,13 @@ The runner does not look it up.
 
 Each entry has a `kind`, a `name`, and optional value fields.
 
-| Field    | Type     | Notes                          |
-| -------- | -------- | ------------------------------ |
-| `kind`   | string   | `flag`, `option`, or `value`.  |
-| `name`   | string   | Flag name or operand value.    |
-| `value`  | string   | One value for an option.       |
+| Field    | Type     | Notes                            |
+| -------- | -------- | -------------------------------- |
+| `kind`   | string   | `flag`, `option`, or `value`.    |
+| `name`   | string   | Flag name or operand value.      |
+| `value`  | string   | One value for an option.         |
 | `values` | string[] | Repeatable values for an option. |
-| `alias`  | string   | Alternate flag name.           |
+| `alias`  | string   | Alternate flag name.             |
 
 `flag` adds only the flag.
 `option` adds the flag and its value.
@@ -109,11 +109,11 @@ Version 1 runs the steps one at a time.
 
 ### verify
 
-| Field            | Type     | Notes                            |
-| ---------------- | -------- | -------------------------------- |
-| `command`        | string   | Command to run after the step.   |
+| Field            | Type     | Notes                                   |
+| ---------------- | -------- | --------------------------------------- |
+| `command`        | string   | Command to run after the step.          |
 | `exists`         | string[] | Paths that must exist and be non-empty. |
-| `expectExitCode` | integer  | Required step exit code.         |
+| `expectExitCode` | integer  | Required step exit code.                |
 
 If `verify` is absent, the adapter supplies a default.
 The yt-dlp default checks the step outputs.
@@ -127,14 +127,14 @@ The guard pass runs after schema and dependency checks.
 An error finding blocks the step.
 A CLI flag overrides the matching plan default.
 
-| Guard        | Code              | Rule                                    |
-| ------------ | ----------------- | --------------------------------------- |
-| Overwrite    | `E_OVERWRITE`     | Blocks a declared output unless `force` is true. |
-| Unsafe       | `E_UNSAFE`        | Blocks an unsafe step unless `unsafe` is true. |
-| Unbound var  | `E_UNBOUND_VAR`   | Blocks an unknown placeholder.          |
-| Tool mismatch | `E_TOOL_MISMATCH` | Blocks a step for the wrong adapter.    |
-| Missing dep  | `E_MISSING_DEP`   | Blocks an unknown `dependsOn` id.       |
-| Cycle        | `E_CYCLE`         | Blocks a dependency cycle.              |
+| Guard         | Code              | Rule                                             |
+| ------------- | ----------------- | ------------------------------------------------ |
+| Overwrite     | `E_OVERWRITE`     | Blocks a declared output unless `force` is true. |
+| Unsafe        | `E_UNSAFE`        | Blocks an unsafe step unless `unsafe` is true.   |
+| Unbound var   | `E_UNBOUND_VAR`   | Blocks an unknown placeholder.                   |
+| Tool mismatch | `E_TOOL_MISMATCH` | Blocks a step for the wrong adapter.             |
+| Missing dep   | `E_MISSING_DEP`   | Blocks an unknown `dependsOn` id.                |
+| Cycle         | `E_CYCLE`         | Blocks a dependency cycle.                       |
 
 The yt-dlp adapter marks `exec`, `exec-before-download`, and `postprocessor-args` as unsafe.
 It also marks an output to `-` as unsafe.
@@ -143,11 +143,11 @@ Those steps need `--unsafe`.
 
 ## Execution modes
 
-| Mode              | Behavior                                          |
-| ----------------- | ------------------------------------------------- |
+| Mode              | Behavior                                                      |
+| ----------------- | ------------------------------------------------------------- |
 | Dry-run (default) | Validate, bind, render, and report guards. No process starts. |
-| `--run`           | Execute after the checks pass. Ask for confirmation. |
-| `--run --yes`     | Execute without the confirmation prompt.          |
+| `--run`           | Execute after the checks pass. Ask for confirmation.          |
+| `--run --yes`     | Execute without the confirmation prompt.                      |
 
 A guard still applies with `--yes`.
 `--yes` skips only the prompt.

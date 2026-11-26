@@ -157,9 +157,7 @@ describe("ffmpeg planner verification", () => {
   });
 
   it("probes the first output with ffprobe", () => {
-    const verify = ffmpegAdapter.defaultVerify(
-      step({ outputs: ["out/web.mp4", "out/extra.mkv"] }),
-    );
+    const verify = ffmpegAdapter.defaultVerify(step({ outputs: ["out/web.mp4", "out/extra.mkv"] }));
 
     expect(verify).toEqual({
       command: "ffprobe -v error -show_entries format=format_name -of csv=p=0 out/web.mp4",

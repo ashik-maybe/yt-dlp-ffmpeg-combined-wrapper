@@ -56,8 +56,8 @@ export function Review(props: ReviewProps): ReactElement {
         return (
           <Box key={step.id} flexDirection="column" marginTop={index === 0 ? 1 : 0}>
             <Text color={selected ? "cyan" : undefined}>
-              {selected ? ">" : " "} {index + 1}. [{STATUS_MARK[step.status]}] {step.tool} · {step.label}{" "}
-              <Text dimColor>({step.id})</Text>
+              {selected ? ">" : " "} {index + 1}. [{STATUS_MARK[step.status]}] {step.tool} ·{" "}
+              {step.label} <Text dimColor>({step.id})</Text>
             </Text>
             <Text dimColor wrap="wrap">
               {"    $ "}
@@ -71,7 +71,11 @@ export function Review(props: ReviewProps): ReactElement {
         <Text bold>Guard findings ({findings.length})</Text>
         {findings.length === 0 ? <Text dimColor>No guard findings.</Text> : null}
         {findings.map((finding, index) => (
-          <Text key={`${finding.code}-${index}`} color={severityColor(finding.severity)} wrap="wrap">
+          <Text
+            key={`${finding.code}-${index}`}
+            color={severityColor(finding.severity)}
+            wrap="wrap"
+          >
             {finding.severity.toUpperCase()} {finding.code}: {finding.message}
             {finding.location ? ` [${finding.location}]` : ""}
             {finding.fix ? ` Fix: ${finding.fix}` : ""}
@@ -81,7 +85,9 @@ export function Review(props: ReviewProps): ReactElement {
 
       <Box marginTop={1}>
         <Text dimColor>
-          {narrow ? "↑/↓ select · Enter continue · Esc back" : `↑/↓ select · Enter continue · Esc back · v${version}`}
+          {narrow
+            ? "↑/↓ select · Enter continue · Esc back"
+            : `↑/↓ select · Enter continue · Esc back · v${version}`}
         </Text>
       </Box>
     </Box>

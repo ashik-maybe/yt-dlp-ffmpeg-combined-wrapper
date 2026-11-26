@@ -91,7 +91,10 @@ describe("task lists", () => {
     for (const tool of TOOLS) {
       const rows = tasks.filter((task) => task.tool === tool);
       expect(rows.length, tool).toBe(6);
-      expect(rows.map((task) => task.id), tool).toEqual([...CURATED[tool]]);
+      expect(
+        rows.map((task) => task.id),
+        tool,
+      ).toEqual([...CURATED[tool]]);
       for (const row of rows) {
         expect(row.label.length, row.id).toBeGreaterThan(0);
         expect(row.hint.length, row.id).toBeGreaterThan(0);

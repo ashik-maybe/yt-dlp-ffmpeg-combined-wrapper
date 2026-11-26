@@ -60,14 +60,16 @@ function tick(ms = 30): Promise<void> {
 
 describe("App", () => {
   it("shows the picker, chrome, and step 1 of 6", () => {
-    const view = render(<App
+    const view = render(
+      <App
         runEnabled={false}
         plan={plan}
         yes={false}
         force={false}
         unsafe={false}
         version="1.2.3"
-      />);
+      />,
+    );
     const frame = view.lastFrame() ?? "";
 
     expect(frame).toContain(APP_NAME);
@@ -80,13 +82,9 @@ describe("App", () => {
   });
 
   it("opens More with m and returns with Escape", async () => {
-    const view = render(<App
-        runEnabled={false}
-        plan={plan}
-        yes={false}
-        force={false}
-        unsafe={false}
-      />);
+    const view = render(
+      <App runEnabled={false} plan={plan} yes={false} force={false} unsafe={false} />,
+    );
 
     view.stdin.write("m");
     await vi.waitFor(() => expect(view.lastFrame() ?? "").toContain("More tasks"));
@@ -99,13 +97,9 @@ describe("App", () => {
   });
 
   it("moves the picker selection with arrows and opens Review on Enter", async () => {
-    const view = render(<App
-        runEnabled={false}
-        plan={plan}
-        yes={false}
-        force={false}
-        unsafe={false}
-      />);
+    const view = render(
+      <App runEnabled={false} plan={plan} yes={false} force={false} unsafe={false} />,
+    );
 
     view.stdin.write("\u001B[B");
     await tick();
@@ -117,13 +111,9 @@ describe("App", () => {
   });
 
   it("routes picker, review, confirm, and back with Escape", async () => {
-    const view = render(<App
-        runEnabled={false}
-        plan={plan}
-        yes={false}
-        force={false}
-        unsafe={false}
-      />);
+    const view = render(
+      <App runEnabled={false} plan={plan} yes={false} force={false} unsafe={false} />,
+    );
 
     view.stdin.write("\r");
     await vi.waitFor(() => expect(view.lastFrame() ?? "").toContain("Review plan: 3 step(s)"));
@@ -141,13 +131,9 @@ describe("App", () => {
   });
 
   it("opens and closes help with ?", async () => {
-    const view = render(<App
-        runEnabled={false}
-        plan={plan}
-        yes={false}
-        force={false}
-        unsafe={false}
-      />);
+    const view = render(
+      <App runEnabled={false} plan={plan} yes={false} force={false} unsafe={false} />,
+    );
 
     view.stdin.write("?");
     await vi.waitFor(() =>
@@ -166,40 +152,46 @@ describe("App", () => {
   it("quits with q, Escape at the root, and Ctrl+C", async () => {
     const onQuit = vi.fn();
 
-    const qView = render(<App
+    const qView = render(
+      <App
         runEnabled={false}
         plan={plan}
         yes={false}
         force={false}
         unsafe={false}
         onQuit={onQuit}
-      />);
+      />,
+    );
     qView.stdin.write("q");
     await vi.waitFor(() => expect(onQuit).toHaveBeenCalledTimes(1));
     qView.unmount();
 
     onQuit.mockClear();
-    const escView = render(<App
+    const escView = render(
+      <App
         runEnabled={false}
         plan={plan}
         yes={false}
         force={false}
         unsafe={false}
         onQuit={onQuit}
-      />);
+      />,
+    );
     escView.stdin.write("\u001B");
     await vi.waitFor(() => expect(onQuit).toHaveBeenCalledTimes(1));
     escView.unmount();
 
     onQuit.mockClear();
-    const ctrlView = render(<App
+    const ctrlView = render(
+      <App
         runEnabled={false}
         plan={plan}
         yes={false}
         force={false}
         unsafe={false}
         onQuit={onQuit}
-      />);
+      />,
+    );
     ctrlView.stdin.write("\u0003");
     await vi.waitFor(() => expect(onQuit).toHaveBeenCalledTimes(1));
   });
@@ -275,14 +267,7 @@ describe("App", () => {
   it("asks for confirmation when --yes is absent and approves with a", async () => {
     const executor = vi.fn(async () => okResults);
     const view = render(
-      <App
-        runEnabled
-        plan={plan}
-        yes={false}
-        force={false}
-        unsafe={false}
-        executor={executor}
-      />,
+      <App runEnabled plan={plan} yes={false} force={false} unsafe={false} executor={executor} />,
     );
 
     view.stdin.write("\r");
@@ -300,18 +285,9 @@ describe("App", () => {
   });
 
   it("aborts a running plan with a and shows the Summary", async () => {
-    const executor = vi.fn(
-      (_request: RunRequest) => new Promise<readonly StepResult[]>(() => {}),
-    );
+    const executor = vi.fn((_request: RunRequest) => new Promise<readonly StepResult[]>(() => {}));
     const view = render(
-      <App
-        runEnabled
-        plan={plan}
-        yes
-        force={false}
-        unsafe={false}
-        executor={executor}
-      />,
+      <App runEnabled plan={plan} yes force={false} unsafe={false} executor={executor} />,
     );
 
     view.stdin.write("\r");
@@ -326,14 +302,9 @@ describe("App", () => {
   });
 
   it("uses the narrow layout when the terminal is narrow", () => {
-    const view = render(<App
-        runEnabled={false}
-        plan={plan}
-        yes={false}
-        force={false}
-        unsafe={false}
-        columns={60}
-      />);
+    const view = render(
+      <App runEnabled={false} plan={plan} yes={false} force={false} unsafe={false} columns={60} />,
+    );
     const frame = view.lastFrame() ?? "";
 
     expect(frame).toContain("Common tasks");
