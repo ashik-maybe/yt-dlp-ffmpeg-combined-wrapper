@@ -4,7 +4,7 @@ import type { ScreenProps, StepStatus, StepView } from "../types.js";
 export interface ProgressProps extends ScreenProps {
   /** Steps to display, in run order. */
   readonly steps: readonly StepView[];
-  /** Captured output lines. The last non-empty line is shown. */
+  /** Captured output lines. The last non-empty line is shown on wide terminals. */
   readonly logs?: readonly string[];
 }
 
@@ -47,7 +47,7 @@ function renderBar(percent: number, width: number): string {
   return `${"#".repeat(filled)}${"-".repeat(width - filled)}`;
 }
 
-/** Screen that shows step status, progress, and the last log line. */
+/** Screen that shows step status, progress, and the last log line on wide terminals. */
 export function Progress({ steps, logs = [], narrow, version }: ProgressProps) {
   const { total, done, failed, percent } = summarize(steps);
   const width = narrow ? NARROW_BAR_WIDTH : BAR_WIDTH;
@@ -69,10 +69,12 @@ export function Progress({ steps, logs = [], narrow, version }: ProgressProps) {
           </Text>
         ))}
       </Box>
-      <Box flexDirection="column" marginTop={1}>
-        <Text dimColor>Last log:</Text>
-        <Text wrap="truncate-end">{lastLog ?? "No output yet."}</Text>
-      </Box>
+      {narrow ? null : (
+        <Box flexDirection="column" marginTop={1}>
+          <Text dimColor>Last log:</Text>
+          <Text wrap="truncate-end">{lastLog ?? "No output yet."}</Text>
+        </Box>
+      )}
     </Box>
   );
 }

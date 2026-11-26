@@ -108,6 +108,17 @@ describe("Review", () => {
     await vi.waitFor(() => expect(props.onBack).toHaveBeenCalledTimes(1));
   });
 
+  it("uses ASCII selection hints", () => {
+    const view = render(
+      <Review {...screenProps()} steps={steps} findings={[]} onContinue={vi.fn()} />,
+    );
+    const frame = view.lastFrame() ?? "";
+
+    expect(frame).toContain("^/v select - Enter continue - Esc back");
+    expect(frame).not.toContain("\u2191");
+    expect(frame).not.toContain("\u2193");
+  });
+
   it("shows an empty state when there are no steps or findings", () => {
     const view = render(
       <Review {...screenProps()} steps={[]} findings={[]} onContinue={vi.fn()} />,
@@ -130,6 +141,7 @@ describe("Confirm", () => {
 
     expect(frame).toContain("Confirm 1 risky step(s)");
     expect(frame).toContain("Transcode");
+    expect(frame).toContain("ffmpeg - Transcode (s2)");
     expect(frame).toContain("ffmpeg -i in.webm out.mp4");
     expect(frame).not.toContain("Download");
     expect(frame).toContain("E_UNSAFE: step s2 requires unsafe mode");

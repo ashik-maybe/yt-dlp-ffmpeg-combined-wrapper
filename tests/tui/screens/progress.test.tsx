@@ -102,6 +102,31 @@ describe("Progress", () => {
     expect(frame).not.toContain("starting run");
   });
 
+  it("hides the last log line in the narrow layout but keeps the bar", () => {
+    const { lastFrame } = render(
+      <Progress
+        {...baseProps}
+        narrow
+        steps={[
+          step("a", "Step A", "ok"),
+          step("b", "Step B", "ok"),
+          step("c", "Step C", "pending"),
+          step("d", "Step D", "pending"),
+        ]}
+        logs={["starting run", "", "frame= 120 fps= 30"]}
+      />,
+    );
+
+    const frame = lastFrame() ?? "";
+    expect(frame).toContain("Progress");
+    expect(frame).toContain("[#####-----]");
+    expect(frame).toContain("50%");
+    expect(frame).toContain("2/4 done");
+    expect(frame).not.toContain("Last log:");
+    expect(frame).not.toContain("frame= 120 fps= 30");
+    expect(frame).not.toContain("starting run");
+  });
+
   it("reports when no log output exists yet", () => {
     const { lastFrame } = render(
       <Progress {...baseProps} steps={[step("a", "Step A", "pending")]} logs={[]} />,

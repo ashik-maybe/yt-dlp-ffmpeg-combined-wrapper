@@ -79,6 +79,8 @@ describe("App", () => {
     expect(frame).toContain("Common tasks");
     expect(frame).toContain("best-video");
     expect(frame).toContain("More tasks...");
+    expect(frame).toContain("Up/Down move - Enter select - m more - ? help - q quit");
+    expect(frame).not.toMatch(/[^\x00-\x7F]/);
   });
 
   it("opens More with m and returns with Escape", async () => {
@@ -310,5 +312,7 @@ describe("App", () => {
     expect(frame).toContain("Common tasks");
     expect(frame).not.toContain("yt-dlp --no-playlist");
     expect(frame).toContain("m more");
+    expect(frame).toContain("Enter select - m more - ? help - q quit");
+    expect(frame).not.toMatch(/[^\x00-\x7F]/);
   });
 });

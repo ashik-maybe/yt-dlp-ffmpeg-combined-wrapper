@@ -51,7 +51,7 @@ export function Confirm(props: ConfirmProps): ReactElement {
       {risky.map((step) => (
         <Box key={step.id} flexDirection="column" marginTop={1}>
           <Text color="red">
-            ! {step.tool} · {step.label} <Text dimColor>({step.id})</Text>
+            ! {step.tool} - {step.label} <Text dimColor>({step.id})</Text>
           </Text>
           <Text dimColor wrap="wrap">
             {"    $ "}
@@ -72,7 +72,7 @@ export function Confirm(props: ConfirmProps): ReactElement {
       ) : null}
 
       <Box marginTop={1}>
-        <Text>Press y to confirm · Esc to go back</Text>
+        <Text>Press y to confirm - Esc to go back</Text>
       </Box>
       <Text dimColor>v{version}</Text>
     </Box>

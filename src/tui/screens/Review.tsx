@@ -56,7 +56,7 @@ export function Review(props: ReviewProps): ReactElement {
         return (
           <Box key={step.id} flexDirection="column" marginTop={index === 0 ? 1 : 0}>
             <Text color={selected ? "cyan" : undefined}>
-              {selected ? ">" : " "} {index + 1}. [{STATUS_MARK[step.status]}] {step.tool} ·{" "}
+              {selected ? ">" : " "} {index + 1}. [{STATUS_MARK[step.status]}] {step.tool} -{" "}
               {step.label} <Text dimColor>({step.id})</Text>
             </Text>
             <Text dimColor wrap="wrap">
@@ -86,8 +86,8 @@ export function Review(props: ReviewProps): ReactElement {
       <Box marginTop={1}>
         <Text dimColor>
           {narrow
-            ? "↑/↓ select · Enter continue · Esc back"
-            : `↑/↓ select · Enter continue · Esc back · v${version}`}
+            ? "^/v select - Enter continue - Esc back"
+            : `^/v select - Enter continue - Esc back - v${version}`}
         </Text>
       </Box>
     </Box>

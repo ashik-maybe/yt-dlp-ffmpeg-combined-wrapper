@@ -359,28 +359,28 @@ export function App(props: AppProps) {
   function footer(): string {
     if (screen === "picker") {
       return narrow
-        ? "Enter select · m more · ? help · q quit"
-        : "Up/Down move · Enter select · m more · ? help · q quit";
+        ? "Enter select - m more - ? help - q quit"
+        : "Up/Down move - Enter select - m more - ? help - q quit";
     }
     if (screen === "more") {
       return narrow
-        ? "Type search · Esc back · ? help"
-        : "Type to search · Up/Down move · Enter select · Esc back · ? help";
+        ? "Type search - Esc back - ? help"
+        : "Type to search - Up/Down move - Enter select - Esc back - ? help";
     }
     if (screen === "review") {
       return narrow
-        ? "Enter next · r run · Esc back · ? help"
-        : "Up/Down select · Enter next · r run · Esc back · ? help · q quit";
+        ? "Enter next - r run - Esc back - ? help"
+        : "Up/Down select - Enter next - r run - Esc back - ? help - q quit";
     }
     if (screen === "confirm") {
       return narrow
-        ? "y/a approve · Esc back · ? help"
-        : "y/a approve · Esc back · ? help · q quit";
+        ? "y/a approve - Esc back - ? help"
+        : "y/a approve - Esc back - ? help - q quit";
     }
     if (screen === "progress") {
-      return narrow ? "a abort · ? help · q quit" : "a or Esc abort · ? help · q quit";
+      return narrow ? "a abort - ? help - q quit" : "a or Esc abort - ? help - q quit";
     }
-    return narrow ? "Enter picker · q quit" : "Enter picker · Esc picker · q quit";
+    return narrow ? "Enter picker - q quit" : "Enter picker - Esc picker - q quit";
   }
 
   return (
@@ -388,8 +388,8 @@ export function App(props: AppProps) {
       <Chrome version={version} stepCount={plan.steps.length} narrow={narrow} />
       <Text dimColor>
         step {SCREEN_STEP[screen]} of {SCREEN_TOTAL}
-        {runEnabled ? "" : " · dry-run"}
-        {running ? " · running" : ""}
+        {runEnabled ? "" : " - dry-run"}
+        {running ? " - running" : ""}
       </Text>
 
       <Box flexDirection="column" marginTop={1}>
@@ -397,7 +397,7 @@ export function App(props: AppProps) {
           <>
             <HelpOverlay narrow={narrow} onClose={() => setHelp(false)} />
             <Box marginTop={1}>
-              <Text dimColor>m more · a approve or abort · ctrl+c quit</Text>
+              <Text dimColor>m more - a approve or abort - ctrl+c quit</Text>
             </Box>
           </>
         ) : (

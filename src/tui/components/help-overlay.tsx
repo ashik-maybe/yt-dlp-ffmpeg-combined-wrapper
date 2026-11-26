@@ -9,15 +9,15 @@ export interface HelpKey {
 
 /** Every key the TUI handles. */
 export const HELP_KEYS: readonly HelpKey[] = [
-  { keys: "up/down, j/k", action: "move selection" },
-  { keys: "enter", action: "select or confirm" },
-  { keys: "space", action: "toggle task" },
-  { keys: "y", action: "confirm yes" },
-  { keys: "n", action: "cancel no" },
+  { keys: "up/down", action: "move selection" },
+  { keys: "enter", action: "select, continue, or reset" },
+  { keys: "m", action: "open more tasks" },
+  { keys: "a", action: "approve or abort" },
   { keys: "r", action: "run plan" },
   { keys: "?", action: "toggle this help" },
-  { keys: "esc", action: "close help or go back" },
+  { keys: "esc", action: "close help, go back, abort, or quit" },
   { keys: "q", action: "quit" },
+  { keys: "y", action: "approve in confirm" },
 ];
 
 export interface HelpOverlayProps extends Pick<ScreenProps, "narrow"> {
