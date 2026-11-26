@@ -41,7 +41,7 @@ jobs:
       - name: Install QEMU for arm64 smoke test
         run: |
           sudo apt-get update
-          sudo apt-get install -y qemu-user-binfmt
+          sudo apt-get install -y qemu-user-binfmt libc6-arm64-cross
 
       - name: Smoke test x64 binary
         run: |
@@ -58,7 +58,7 @@ jobs:
           printf '%s\n' "$out"
 
       - name: Smoke test arm64 binary
-        run: qemu-aarch64 ./dist/combined-wrapper-bun-linux-arm64 --version
+        run: QEMU_LD_PREFIX=/usr/aarch64-linux-gnu qemu-aarch64 ./dist/combined-wrapper-bun-linux-arm64 --version
 
       - name: Write checksums
         run: |
