@@ -28,3 +28,16 @@ jobs:
           fi
           "$bin" --version
           "$bin" --help
+      - name: Smoke test print mode
+        run: |
+          bin="$(find dist -maxdepth 1 -type f -name '*linux-x64' -print -quit)"
+          if [ -z "$bin" ]; then
+            echo "no x64 binary found in dist" >&2
+            exit 1
+          fi
+          out="$("$bin" --print --plan examples/plans/download-transcode.json)"
+          if [ -z "$(printf '%s' "$out" | tr -d '[:space:]')" ]; then
+            echo "print mode produced no output" >&2
+            exit 1
+          fi
+          printf '%s\n' "$out"

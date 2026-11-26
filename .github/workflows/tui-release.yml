@@ -48,6 +48,15 @@ jobs:
           ./dist/combined-wrapper-bun-linux-x64 --version
           ./dist/combined-wrapper-bun-linux-x64 --help
 
+      - name: Smoke test print mode (x64)
+        run: |
+          out="$(./dist/combined-wrapper-bun-linux-x64 --print --plan examples/plans/download-transcode.json)"
+          if [ -z "$(printf '%s' "$out" | tr -d '[:space:]')" ]; then
+            echo "print mode produced no output" >&2
+            exit 1
+          fi
+          printf '%s\n' "$out"
+
       - name: Smoke test arm64 binary
         run: qemu-aarch64-static ./dist/combined-wrapper-bun-linux-arm64 --version
 
