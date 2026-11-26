@@ -105,6 +105,29 @@ describe("checkSpecs", () => {
     expect(duplicates[0]?.message).toContain(second);
   });
 
+  it("ignores catalog groups and reads their nested items", async () => {
+    await writeJson("data/catalog.json", {
+      picker: {
+        id: "picker",
+        items: [{ id: "ff-1", name: "Scale", tool: "ffmpeg", args: [] }],
+      },
+      more: {
+        id: "more",
+        items: [
+          { id: "ff-2", name: "Trim", tool: "ffmpeg", args: [] },
+          { id: "yt-1", name: "Audio", tool: "yt-dlp", args: [] },
+        ],
+      },
+    });
+
+    const result = await checkSpecs([path.join(workDir, "data")]);
+
+    expect(result.ok).toBe(true);
+    expect(result.recipeCount).toBe(3);
+    expect(result.counts).toEqual({ ffmpeg: 2, "yt-dlp": 1 });
+    expect(result.counts.unknown).toBeUndefined();
+  });
+
   it("ignores roots that do not exist", async () => {
     const result = await checkSpecs([path.join(workDir, "absent")]);
 
@@ -146,8 +169,8 @@ describe("spec-check CLI", () => {
   });
 
   it("exits 1 on duplicate recipe ids", async () => {
-    await writeJson("data/first.json", [{ id: "dup", name: "One", tool: "ffmpeg" }]);
-    await writeJson("data/second.json", [{ id: "dup", name: "Two", tool: "ffmpeg" }]);
+    await writeJson("data/first.json", [{ id: "dup", name: "One", tool: "ffmpeg", args: [] }]);
+    await writeJson("data/second.json", [{ id: "dup", name: "Two", tool: "ffmpeg", args: [] }]);
 
     const run = spawnSync(process.execPath, [scriptPath, path.join(workDir, "data")], {
       encoding: "utf8",

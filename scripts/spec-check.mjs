@@ -26,7 +26,10 @@ function isRecipe(value) {
     typeof value === "object" &&
     !Array.isArray(value) &&
     typeof value.id === "string" &&
-    value.id.trim() !== ""
+    value.id.trim() !== "" &&
+    typeof value.tool === "string" &&
+    value.tool !== "" &&
+    Array.isArray(value.args)
   );
 }
 
@@ -36,7 +39,7 @@ function collectRecipes(value, out) {
     return;
   }
   if (value === null || typeof value !== "object") return;
-  if (isRecipe(value) && !Array.isArray(value.recipes)) {
+  if (isRecipe(value)) {
     out.push(value);
     return;
   }
