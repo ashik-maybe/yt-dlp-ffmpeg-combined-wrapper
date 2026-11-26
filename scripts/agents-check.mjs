@@ -39,13 +39,16 @@ export const STALE_TERMS = [/web\s*app/i, /playwright/i];
 function stripFences(text) {
   const lines = text.split(/\r?\n/);
   const kept = [];
-  let fenced = false;
+  let fence = null;
   for (const line of lines) {
-    if (/^\s*```/.test(line)) {
-      fenced = !fenced;
+    const match = /^\s*(```|~~~)/.exec(line);
+    if (match !== null) {
+      const marker = match[1];
+      if (fence === null) fence = marker;
+      else if (fence === marker) fence = null;
       continue;
     }
-    if (!fenced) kept.push(line);
+    if (fence === null) kept.push(line);
   }
   return kept.join("\n");
 }
@@ -65,7 +68,10 @@ function escapeRegExp(value) {
 }
 
 function hasTerm(text, term) {
-  const pattern = new RegExp(`(?:^|[^A-Za-z0-9_-])${escapeRegExp(term)}(?![A-Za-z0-9_-])`, "m");
+  const pattern = new RegExp(
+    `(?:^|[^A-Za-z0-9_-])${escapeRegExp(term)}(?![A-Za-z0-9_-])(?![.:][A-Za-z0-9_])`,
+    "m",
+  );
   return pattern.test(text);
 }
 

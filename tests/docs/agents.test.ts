@@ -157,11 +157,24 @@ describe("checkAgents", () => {
 
   it("does not count a heading inside a code fence", async () => {
     const checkAgents = await loadCheckAgents();
-    const text = COMPLETE.replace("## Purpose", "```\n## Purpose\n```");
+    const backtick = COMPLETE.replace("## Purpose", "```\n## Purpose\n```");
+    const tilde = COMPLETE.replace("## Purpose", "~~~\n## Purpose\n~~~");
+
+    expect(checkAgents(backtick).missing).toContain("heading: Purpose");
+    expect(checkAgents(tilde).missing).toContain("heading: Purpose");
+  });
+
+  it("rejects dotted and colon suffixes", async () => {
+    const checkAgents = await loadCheckAgents();
+    const text = COMPLETE.replace("src/tui", "src/tui.ts")
+      .replaceAll("OWNERS.md", "OWNERS.md.bak")
+      .replace("bun run ci", "bun run ci:watch");
 
     const result = checkAgents(text);
 
-    expect(result.missing).toContain("heading: Purpose");
+    expect(result.missing).toContain("path: src/tui");
+    expect(result.missing).toContain("path: OWNERS.md");
+    expect(result.missing).toContain("command: bun run ci");
   });
 });
 
