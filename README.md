@@ -96,22 +96,23 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 
 ## Keys
 
-| Key       | Screen                  | Action                           |
-| --------- | ----------------------- | -------------------------------- |
-| `Up/Down` | Picker, More, Review    | Move the selection.              |
-| `Enter`   | Picker, More            | Open the selected step.          |
-| `Enter`   | Review                  | Continue to confirm.             |
-| `Enter`   | Summary                 | Return to the picker.            |
-| `m`       | Picker                  | Open the More list.              |
-| `r`       | Review, Confirm         | Request a run. Needs `--run`.    |
-| `a`       | Confirm                 | Confirm execution.               |
-| `a`       | Progress                | Abort the run.                   |
-| `y`       | Confirm                 | Confirm execution.               |
-| `?`       | Any                     | Open or close help.              |
-| `Esc`     | Picker                  | Quit.                            |
-| `Esc`     | More, Review, Summary   | Go back or close help.           |
-| `q`       | Picker, Review, Confirm | Quit.                            |
-| `Ctrl+C`  | Any                     | Abort the current step and exit. |
+| Key       | Screen                                     | Action                           |
+| --------- | ------------------------------------------ | -------------------------------- |
+| `Up/Down` | Picker, More, Review                       | Move the selection.              |
+| `Enter`   | Picker, More                               | Open the selected step.          |
+| `Enter`   | Review                                     | Continue to confirm.             |
+| `Enter`   | Summary                                    | Return to the picker.            |
+| `m`       | Picker                                     | Open the More list.              |
+| `r`       | Review, Confirm                            | Request a run. Needs `--run`.    |
+| `a`       | Confirm                                    | Confirm execution.               |
+| `a`       | Progress                                   | Abort the run.                   |
+| `y`       | Confirm                                    | Confirm execution.               |
+| `?`       | Any                                        | Open or close help.              |
+| `Esc`     | Picker                                     | Quit.                            |
+| `Esc`     | More, Review, Confirm, Summary             | Go back or close help.           |
+| `Esc`     | Progress                                   | Abort the run.                   |
+| `q`       | Picker, Review, Confirm, Progress, Summary | Quit.                            |
+| `Ctrl+C`  | Any                                        | Abort the current step and exit. |
 
 ## Flags
 

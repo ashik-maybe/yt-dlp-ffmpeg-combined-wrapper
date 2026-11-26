@@ -221,5 +221,5 @@ Rendered commands:
 
 ```sh
 yt-dlp -f 'bv*+ba/b' --merge-output-format mkv -o 'out/source.%(ext)s' --no-playlist https://example.com/video
-ffmpeg -hide_banner -i out/source.mkv -c:v libx264 -preset medium -crf 23 -c:a aac -b:a 128k -movflags +faststart out/web.mp4
+ffmpeg -hide_banner -i out/source.mkv -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart out/web.mp4
 ```
