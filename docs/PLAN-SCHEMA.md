@@ -22,11 +22,10 @@ The validator accepts `posix`, `powershell`, and `cmd` as shell names.
 
 ### defaults
 
-| Field    | Type    | Default         |
-| -------- | ------- | --------------- |
-| `shell`  | string  | The plan shell. |
-| `force`  | boolean | `false`         |
-| `unsafe` | boolean | `false`         |
+| Field    | Type    | Default |
+| -------- | ------- | ------- |
+| `force`  | boolean | `false` |
+| `unsafe` | boolean | `false` |
 
 A CLI flag overrides the matching default.
 Otherwise the default value applies.

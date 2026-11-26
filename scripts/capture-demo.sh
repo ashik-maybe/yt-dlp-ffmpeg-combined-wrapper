@@ -10,6 +10,11 @@ if ! command -v vhs >/dev/null 2>&1; then
 	exit 1
 fi
 
+if ! command -v ttyd >/dev/null 2>&1; then
+	echo "error: ttyd is required" >&2
+	exit 1
+fi
+
 if ! command -v ffmpeg >/dev/null 2>&1; then
 	echo "error: ffmpeg is required" >&2
 	exit 1

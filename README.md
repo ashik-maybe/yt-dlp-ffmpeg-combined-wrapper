@@ -96,19 +96,21 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 
 ## Keys
 
-| Key              | Screen  | Action                           |
-| ---------------- | ------- | -------------------------------- |
-| `Up/Down`, `j/k` | Any     | Move the selection.              |
-| `Enter`          | Picker  | Load the selected plan.          |
-| `Enter`          | Review  | Continue to the next screen.     |
-| `Space`          | Picker  | Toggle a task.                   |
-| `r`              | Review  | Start the plan in `--run` mode.  |
-| `y`              | Confirm | Confirm execution.               |
-| `n`              | Confirm | Cancel execution.                |
-| `?`              | Any     | Open or close help.              |
-| `Esc`            | Any     | Go back or close help.           |
-| `q`              | Any     | Quit.                            |
-| `Ctrl+C`         | Any     | Abort the current step and exit. |
+| Key       | Screen                  | Action                           |
+| --------- | ----------------------- | -------------------------------- |
+| `Up/Down` | Picker, More, Review    | Move the selection.              |
+| `Enter`   | Picker, More            | Open the selected step.          |
+| `Enter`   | Review                  | Continue to confirm.             |
+| `Enter`   | Summary                 | Return to the picker.            |
+| `m`       | Picker                  | Open the More list.              |
+| `r`       | Review, Confirm         | Start the plan in `--run` mode.  |
+| `a`       | Confirm                 | Confirm execution.               |
+| `a`       | Progress                | Abort the run.                   |
+| `y`       | Confirm                 | Confirm execution.               |
+| `?`       | Any                     | Open or close help.              |
+| `Esc`     | Any                     | Go back or close help.           |
+| `q`       | Picker, Review, Confirm | Quit.                            |
+| `Ctrl+C`  | Any                     | Abort the current step and exit. |
 
 ## Flags
 
@@ -142,7 +144,8 @@ The yt-dlp adapter marks `exec`, `exec-before-download`, and `postprocessor-args
 The ffmpeg adapter marks network inputs and script filters as unsafe.
 The tool binds placeholders before execution.
 An unbound placeholder blocks the step with `E_UNBOUND_VAR`.
-The runner uses argv arrays and does not invoke a shell.
+The runner starts tool commands with argv arrays.
+Verification commands run through `/bin/sh`.
 Verification checks each output after its step.
 
 ## Limits
