@@ -3,6 +3,10 @@ import { readFileSync } from "node:fs";
 const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
 
 const required = [
+  "## Demo",
+  "docs/images/demo.gif",
+  "docs/images/picker.png",
+  "scripts/capture-demo.sh",
   "Install",
   "Quick start",
   "How it works",

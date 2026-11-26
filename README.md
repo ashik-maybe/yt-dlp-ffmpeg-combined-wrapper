@@ -6,6 +6,14 @@ The tool uses a text user interface (TUI).
 It runs in a terminal on Linux.
 It does not upload your media.
 
+## Demo
+
+![Animated demo of the plan picker, help, and review screens](docs/images/demo.gif)
+
+The picker shows every step in the loaded plan.
+
+![Plan picker with two steps](docs/images/picker.png)
+
 ## Install
 
 Download the Linux x64 or arm64 binary from the releases.
@@ -24,7 +32,7 @@ Put each binary in your `PATH`.
 Start the tool:
 
 ```sh
-bun bin/combined-wrapper.ts
+bun bin/combined-wrapper.ts --plan examples/plans/download-transcode.json
 ```
 
 Pick a plan in the plan picker.
@@ -189,5 +197,14 @@ Build the Linux binaries:
 ```sh
 bash scripts/package-tui.sh
 ```
+
+Regenerate the demo images:
+
+```sh
+bash scripts/capture-demo.sh
+```
+
+This needs `vhs`, `ttyd`, and `ffmpeg`.
+The script writes `docs/images/demo.gif` and `docs/images/picker.png`.
 
 Read [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) before you change the plan format.
