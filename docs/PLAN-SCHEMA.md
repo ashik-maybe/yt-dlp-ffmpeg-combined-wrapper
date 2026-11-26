@@ -120,16 +120,16 @@ A failed check marks the step as failed.
 
 The guard pass runs after schema and dependency checks.
 An error finding blocks the step.
-A CLI flag overrides the matching plan default.
+The CLI passes explicit guard flags. Plan defaults do not enable guards.
 
-| Guard         | Code              | Rule                                             |
-| ------------- | ----------------- | ------------------------------------------------ |
-| Overwrite     | `E_OVERWRITE`     | Blocks a declared output unless `force` is true. |
-| Unsafe        | `E_UNSAFE`        | Blocks an unsafe step unless `unsafe` is true.   |
-| Unbound var   | `E_UNBOUND_VAR`   | Blocks an unknown placeholder.                   |
-| Tool mismatch | `E_TOOL_MISMATCH` | Blocks a step for the wrong adapter.             |
-| Missing dep   | `E_MISSING_DEP`   | Blocks an unknown `dependsOn` id.                |
-| Cycle         | `E_CYCLE`         | Blocks a dependency cycle.                       |
+| Guard         | Code              | Rule                                              |
+| ------------- | ----------------- | ------------------------------------------------- |
+| Overwrite     | `E_OVERWRITE`     | Blocks an existing output unless `force` is true. |
+| Unsafe        | `E_UNSAFE`        | Blocks an unsafe step unless `unsafe` is true.    |
+| Unbound var   | `E_BLOCKED`       | Blocks a remaining placeholder in any field.      |
+| Tool mismatch | `E_TOOL_MISMATCH` | Blocks a step for the wrong adapter.              |
+| Missing dep   | `E_MISSING_DEP`   | Blocks an unknown `dependsOn` id.                 |
+| Cycle         | `E_CYCLE`         | Blocks a dependency cycle.                        |
 
 The yt-dlp adapter marks `exec`, `exec-before-download`, and `postprocessor-args` as unsafe.
 It also marks an output to `-` as unsafe.

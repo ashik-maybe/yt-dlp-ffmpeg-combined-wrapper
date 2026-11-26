@@ -63,7 +63,8 @@ The planners bind recipe args. The data loader uses `src/data`. Tests read `src/
 ## Invariants
 
 - Never execute by default. A process starts only with `--run`.
-- Bind variables before guard checks. An unbound name gives `E_BLOCKED` and `E_UNBOUND_VAR`.
+- Bind variables before guard checks. A remaining placeholder gives `E_BLOCKED`.
+- Adapters also report `E_UNBOUND_VAR` for unknown argument values.
 - `--force` allows an existing output overwrite. `--unsafe` allows guarded steps.
 - Both flags are off by default. Only a CLI flag turns them on.
 - Start tool commands with argv arrays, not a shell. Verification commands use `/bin/sh`.

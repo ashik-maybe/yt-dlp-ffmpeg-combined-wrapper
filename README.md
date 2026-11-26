@@ -10,7 +10,7 @@ It does not upload your media.
 
 ![Animated demo of the plan picker, help, and review screens](docs/images/demo.gif)
 
-The picker shows every step in the loaded plan.
+The picker shows the first six steps. Use More tasks for the rest.
 
 ![Plan picker with two steps](docs/images/picker.png)
 
@@ -35,7 +35,7 @@ Start the tool:
 bun bin/combined-wrapper.ts --plan examples/plans/download-transcode.json
 ```
 
-Pick a plan in the plan picker.
+Pick a step in the task picker.
 The first pass is a dry-run.
 It validates the plan and shows every command.
 It does not start a process.
@@ -119,6 +119,8 @@ See [docs/PLAN-SCHEMA.md](docs/PLAN-SCHEMA.md) for the full plan format.
 | --------------- | ------------------------------------- |
 | `--plan <path>` | Read a plan JSON file.                |
 | `--print`       | Print rendered commands and exit.     |
+| `--version`     | Print the version and exit.           |
+| `--help`        | Print usage and exit.                 |
 | `--run`         | Allow step execution. Off by default. |
 | `--yes`         | Skip the confirmation prompt.         |
 | `--force`       | Allow output overwrite.               |
@@ -141,10 +143,11 @@ Every plan starts as a dry-run.
 `--yes` removes the confirmation prompt.
 The overwrite guard blocks an existing output unless `--force` is set.
 A step marked `unsafe` needs `--unsafe`.
-The yt-dlp adapter marks `exec`, `exec-before-download`, and `postprocessor-args` as unsafe.
-The ffmpeg adapter marks network inputs and script filters as unsafe.
+The yt-dlp adapter marks `exec`, `exec-before-download`, `postprocessor-args`, and an output to `-` as unsafe.
+The ffmpeg adapter marks network inputs, HLS or DASH stream formats, and script filters as unsafe.
 The tool binds placeholders before execution.
-An unbound argument gives `E_UNBOUND_VAR`. Any other unbound field gives `E_BLOCKED`.
+A remaining placeholder blocks the step with `E_BLOCKED`.
+The adapters also report `E_UNBOUND_VAR` for unknown argument values.
 The runner starts tool commands with argv arrays.
 Verification commands run through `/bin/sh`.
 Verification checks each output after its step.
