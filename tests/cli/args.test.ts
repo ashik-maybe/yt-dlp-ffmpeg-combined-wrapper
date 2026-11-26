@@ -64,3 +64,49 @@ describe("parseArgs", () => {
     expect(errors).toEqual(["unexpected argument: plan.json"]);
   });
 });
+
+describe("parseArgs --plan", () => {
+  it("reads a plan path from the next argument", () => {
+    expect(parseArgs(["--plan", "plan.json"])).toEqual({
+      flags: NO_FLAGS,
+      errors: [],
+      plan: "plan.json",
+    });
+  });
+
+  it("reads a plan path from an equals form", () => {
+    expect(parseArgs(["--plan=plan.json"])).toEqual({
+      flags: NO_FLAGS,
+      errors: [],
+      plan: "plan.json",
+    });
+  });
+
+  it("keeps other flags next to --plan", () => {
+    const { flags, errors, plan } = parseArgs(["--plan", "plan.json", "--run", "--yes"]);
+    expect(plan).toBe("plan.json");
+    expect(errors).toEqual([]);
+    expect(flags).toEqual({ ...NO_FLAGS, run: true, yes: true });
+  });
+
+  it("rejects --plan without a value", () => {
+    expect(parseArgs(["--plan"])).toEqual({
+      flags: NO_FLAGS,
+      errors: ["missing value for --plan"],
+    });
+  });
+
+  it("rejects an empty equals value", () => {
+    expect(parseArgs(["--plan="])).toEqual({
+      flags: NO_FLAGS,
+      errors: ["missing value for --plan"],
+    });
+  });
+
+  it("rejects --plan directly before another flag", () => {
+    const { flags, errors, plan } = parseArgs(["--plan", "--run"]);
+    expect(plan).toBeUndefined();
+    expect(errors).toEqual(["missing value for --plan"]);
+    expect(flags).toEqual({ ...NO_FLAGS, run: true });
+  });
+});
