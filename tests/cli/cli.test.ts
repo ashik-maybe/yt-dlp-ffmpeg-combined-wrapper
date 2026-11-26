@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { NAME, VERSION } from "../../src/cli/version.js";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const ENTRY = join(ROOT, "bin/combined-wrapper.ts");
@@ -18,7 +19,7 @@ describe("CLI process exits", () => {
   it("prints the version and exits 0", () => {
     const run = runCli(["--version"]);
     expect(run.status).toBe(0);
-    expect(run.stdout.trim()).toBe("combined-wrapper 1.0.0");
+    expect(run.stdout.trim()).toBe(`${NAME} ${VERSION}`);
     expect(run.stderr).toBe("");
   });
 
