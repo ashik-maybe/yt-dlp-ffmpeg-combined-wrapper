@@ -2,6 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { parseArgs, USAGE } from "../src/cli/args.js";
 import type { CliFlags } from "../src/cli/args.js";
+import { formatFinding, renderPlan } from "../src/cli/print.js";
 import { NAME, VERSION } from "../src/cli/version.js";
 import { validatePlan } from "../src/core/index.js";
 import type { PipelinePlan } from "../src/core/index.js";
@@ -39,6 +40,30 @@ async function loadPlan(path: string): Promise<LoadedPlan> {
   }
 
   return { ok: true, plan: result.plan };
+}
+
+async function printPlanFile(path: string): Promise<void> {
+  const loaded = await loadPlan(path);
+  if (!loaded.ok) {
+    console.error(`${NAME}: ${loaded.message}`);
+    process.exitCode = 2;
+    return;
+  }
+
+  const rendered = renderPlan(loaded.plan);
+  if (!rendered.ok) {
+    for (const finding of rendered.findings) {
+      if (finding.severity === "error") {
+        console.error(`${NAME}: ${formatFinding(finding)}`);
+      }
+    }
+    process.exitCode = 2;
+    return;
+  }
+
+  for (const command of rendered.commands) {
+    console.log(command);
+  }
 }
 
 async function startTui(path: string, flags: CliFlags): Promise<void> {
@@ -84,6 +109,14 @@ if (errors.length > 0) {
   console.log(`${NAME} ${VERSION}`);
 } else if (flags.help) {
   console.log(USAGE);
+} else if (flags.print) {
+  if (plan === undefined) {
+    console.error(`${NAME}: --print requires --plan <path>`);
+    console.error(USAGE);
+    process.exitCode = 2;
+  } else {
+    await printPlanFile(plan);
+  }
 } else if (plan !== undefined) {
   await startTui(plan, flags);
 } else if (flags.run) {

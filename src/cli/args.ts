@@ -7,6 +7,7 @@ export interface CliFlags {
   readonly yes: boolean;
   readonly force: boolean;
   readonly unsafe: boolean;
+  readonly print: boolean;
 }
 
 export interface ParsedArgs {
@@ -21,6 +22,7 @@ Plan and review yt-dlp and ffmpeg commands.
 
 Options:
   --plan <path>  Read a plan JSON file.
+  --print        Print rendered commands and exit. Needs --plan.
   --run          Allow command execution. Off by default.
   --yes          Skip the confirmation prompt before execution.
   --force        Allow overwrite of an existing output file.
@@ -35,6 +37,7 @@ const FLAG_NAMES = [
   "yes",
   "force",
   "unsafe",
+  "print",
 ] as const satisfies readonly (keyof CliFlags)[];
 
 const FLAGS = new Set<string>(FLAG_NAMES);
@@ -47,6 +50,7 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
     yes: false,
     force: false,
     unsafe: false,
+    print: false,
   };
   const errors: string[] = [];
   let planPath: string | undefined;

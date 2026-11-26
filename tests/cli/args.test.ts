@@ -9,6 +9,7 @@ const NO_FLAGS: CliFlags = {
   yes: false,
   force: false,
   unsafe: false,
+  print: false,
 };
 
 const FLAG_CASES: readonly { readonly name: keyof CliFlags; readonly token: string }[] = [
@@ -18,6 +19,7 @@ const FLAG_CASES: readonly { readonly name: keyof CliFlags; readonly token: stri
   { name: "yes", token: "--yes" },
   { name: "force", token: "--force" },
   { name: "unsafe", token: "--unsafe" },
+  { name: "print", token: "--print" },
 ];
 
 describe("parseArgs", () => {
@@ -43,6 +45,7 @@ describe("parseArgs", () => {
       yes: true,
       force: true,
       unsafe: true,
+      print: true,
     });
   });
 
@@ -108,5 +111,20 @@ describe("parseArgs --plan", () => {
     expect(plan).toBeUndefined();
     expect(errors).toEqual(["missing value for --plan"]);
     expect(flags).toEqual({ ...NO_FLAGS, run: true });
+  });
+});
+
+describe("parseArgs --print", () => {
+  it("keeps --print next to --plan", () => {
+    const { flags, errors, plan } = parseArgs(["--print", "--plan", "plan.json"]);
+    expect(plan).toBe("plan.json");
+    expect(errors).toEqual([]);
+    expect(flags).toEqual({ ...NO_FLAGS, print: true });
+  });
+
+  it("rejects an equals form", () => {
+    const { flags, errors } = parseArgs(["--print=1"]);
+    expect(flags).toEqual(NO_FLAGS);
+    expect(errors).toEqual(["unknown flag: --print=1"]);
   });
 });
